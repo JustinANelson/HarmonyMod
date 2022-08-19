@@ -1,10 +1,10 @@
 package com.justinnelson.harmonymod.interactions.events;
 
-import com.justinnelson.harmonymod.interactions.commands.events.modals.ModalFeedback;
-import com.justinnelson.harmonymod.interactions.commands.events.moderations.ModerationBan;
-import com.justinnelson.harmonymod.interactions.commands.events.moderations.ModerationKick;
-import com.justinnelson.harmonymod.interactions.commands.events.moderations.ModerationLookup;
-import com.justinnelson.harmonymod.interactions.commands.events.moderations.ModerationMute;
+import com.justinnelson.harmonymod.interactions.events.modals.ModalFeedback;
+import com.justinnelson.harmonymod.interactions.events.moderations.ModerationBan;
+import com.justinnelson.harmonymod.interactions.events.moderations.ModerationKick;
+import com.justinnelson.harmonymod.interactions.events.moderations.ModerationLookup;
+import com.justinnelson.harmonymod.interactions.events.moderations.ModerationMute;
 import com.justinnelson.harmonymod.interactions.events.buttons.ButtonMute;
 import com.justinnelson.harmonymod.interactions.events.buttons.ButtonToggleRole;
 import com.justinnelson.harmonymod.interactions.events.eventprocessors.ButtonHandler;

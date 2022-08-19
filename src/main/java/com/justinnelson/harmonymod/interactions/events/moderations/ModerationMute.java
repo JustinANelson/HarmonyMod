@@ -1,4 +1,17 @@
 package com.justinnelson.harmonymod.interactions.events.moderations;
 
-public class ModerationMute {
+import com.justinnelson.harmonymod.interactions.commands.CommandCategory;
+import com.justinnelson.harmonymod.interactions.events.customevents.ModerationEvent;
+import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractModerationHandler;
+
+public class ModerationMute extends AbstractModerationHandler {
+
+    public ModerationMute() {
+        super(CommandCategory.MODERATION);
+    }
+
+    @Override
+    public void handle(ModerationEvent event) {
+
+    }
 }

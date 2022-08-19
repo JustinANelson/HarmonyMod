@@ -3,7 +3,7 @@ package com.justinnelson.harmonymod.interactions.commands.slash;
 import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractSlashCommander;
 import com.justinnelson.harmonymod.interactions.commands.CommandCategory;
 import com.justinnelson.harmonymod.data.HMCollections;
-import com.justinnelson.harmonymod.interactions.commands.events.customevents.ModerationEvent;
+import com.justinnelson.harmonymod.interactions.events.customevents.ModerationEvent;
 import com.justinnelson.harmonymod.core.utility.Util;
 
 import net.dv8tion.jda.api.EmbedBuilder;
