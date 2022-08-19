@@ -1,4 +1,4 @@
-package com.justinnelson.harmonymod.commands.message;
+package com.justinnelson.harmonymod.commands.messagecontext;
 
 import com.justinnelson.harmonymod.commands.CommandCategory;
 import com.justinnelson.harmonymod.commands.commandprocessors.AbstractMessageContextContextCommander;
@@ -13,7 +13,7 @@ public class MessageContextToggleSuccess extends AbstractMessageContextContextCo
 
     @Override
     public void handle(MessageContextInteractionEvent event) {
-
+        logExecution();
     }
 
     @Override

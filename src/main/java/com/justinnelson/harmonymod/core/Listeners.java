@@ -349,10 +349,9 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         super.onMessageReceived(event);
-        if (event.toString().startsWith("=")){
-
+        if (event.getMessage().getContentStripped().startsWith(HarmonyMod.botConfig.getCustomPrefix())){
+            HarmonyMod.commandProcessor.process(event);
         }
-        System.out.println("message received");
     }
     @Override
     public void onMessageUpdate(@Nonnull MessageUpdateEvent event) {

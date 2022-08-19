@@ -1,10 +1,12 @@
 package com.justinnelson.harmonymod.commands;
 
 import com.justinnelson.harmonymod.commands.commandprocessors.MessageContextCommander;
+import com.justinnelson.harmonymod.commands.commandprocessors.MessageReceivedCommander;
 import com.justinnelson.harmonymod.commands.commandprocessors.UserContextCommander;
 import com.justinnelson.harmonymod.commands.commandprocessors.SlashCommander;
 import com.justinnelson.harmonymod.commands.context.UserContextMute;
-import com.justinnelson.harmonymod.commands.message.MessageContextReportMessage;
+import com.justinnelson.harmonymod.commands.messagecontext.MessageContextReportMessage;
+import com.justinnelson.harmonymod.commands.messagereceived.MessageReceivedPing;
 import com.justinnelson.harmonymod.commands.slash.SlashEcho;
 import com.justinnelson.harmonymod.commands.slash.SlashFeedback;
 import com.justinnelson.harmonymod.commands.slash.SlashMenu;
@@ -23,12 +25,14 @@ import java.util.ArrayList;
 public class Commands {
     public static ArrayList<SlashCommander> slashCommands = new ArrayList<>();
     public static ArrayList<UserContextCommander> userContextCommands = new ArrayList<>();
-    public static ArrayList<MessageContextCommander> messageCommands = new ArrayList<>();
+    public static ArrayList<MessageContextCommander> messageContextCommands = new ArrayList<>();
+    public static ArrayList<MessageReceivedCommander> messageReceivedCommands = new ArrayList<>();
 
     public static void create() {
         createSlashCommands();
         createUserContextCommands();
         createMessageContextCommands();
+        createMessageReceivedCommands();
         combineCommandLists();
     }
     public static void createSlashCommands() {
@@ -57,6 +61,8 @@ public class Commands {
         HBCollections.messageContextCommands.add(net.dv8tion.jda.api.interactions.commands.build.Commands.message("toggleStandardSuccess"));
         HBCollections.messageContextCommands.add(net.dv8tion.jda.api.interactions.commands.build.Commands.message("ReportMessage"));
     }
+    public static void createMessageReceivedCommands(){
+    }
     public static void combineCommandLists(){
         HBCollections.guildCommands.addAll(HBCollections.slashCommands);
         HBCollections.guildCommands.addAll(HBCollections.userContextCommands);
@@ -65,6 +71,8 @@ public class Commands {
 
     public static void register(){
         create();
+
+        //Slash Commands
         new SlashEcho();
         new SlashFeedback();
         new SlashMenu();
@@ -75,9 +83,14 @@ public class Commands {
         new SlashRoleButton();
         new SlashTime();
 
+        //User Context Commands
         new UserContextMute();
 
+        //Message Context Commands
         new MessageContextReportMessage();
+
+        //Message Received Commands
+        new MessageReceivedPing();
     }
 
     public static void registerSlashCommand(SlashCommander slashCommander){
@@ -89,6 +102,9 @@ public class Commands {
     }
 
     public static void registerMessageCommand(MessageContextCommander messageContextCommander){
-        messageCommands.add(messageContextCommander);
+        messageContextCommands.add(messageContextCommander);
+    }
+    public static void registerMessageReceivedCommand(MessageReceivedCommander messageReceivedCommander) {
+        messageReceivedCommands.add(messageReceivedCommander);
     }
 }

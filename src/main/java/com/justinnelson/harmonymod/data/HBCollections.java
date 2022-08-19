@@ -16,5 +16,6 @@ public class HBCollections {
     public static ArrayList<SlashCommandData> slashCommands = new ArrayList<>();
     public static ArrayList<CommandData> userContextCommands = new ArrayList<>();
     public static ArrayList<CommandData> messageContextCommands = new ArrayList<>();
+    public static ArrayList<CommandData> messageReceiveCommands = new ArrayList<>();
     public static ArrayList<CommandData> guildCommands = new ArrayList<>();
 }
