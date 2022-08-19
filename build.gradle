@@ -2,8 +2,10 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.0'
     id 'java'
+    id 'application'
 }
 // Include dependent libraries in archive.
+mainClassName = 'com.justinnelson.harmonymod.core.HarmonyMod'
 
 group 'com.justinnelson'
 
