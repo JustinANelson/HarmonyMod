@@ -6,10 +6,11 @@ I will add features here as they are added and tested.
 You can find me in the Harmony support server here: https://discord.gg/tfnpyFk5ee
 
 To run this bot yourself set all these:
-"TOKEN"
-"DBURI"
-"OWNER"
-"DBNAME"
+TOKEN=
+DBURI=
+DBNAME=
+OWNER=
+SUPPORTSERVER=
 as config variables in a file named config.properties
 
 You can use MongoDB Atlas as a free MongoDB host.

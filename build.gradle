@@ -12,7 +12,7 @@ repositories {
 }
 
 def jdaVersion = '5.0.0-alpha.17'
-def appVersion = "0.1"
+def appVersion = "current"
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.8")

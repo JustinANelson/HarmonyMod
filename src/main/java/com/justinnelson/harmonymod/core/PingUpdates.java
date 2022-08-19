@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PingLoop implements Runnable{
+public class PingUpdates implements Runnable{
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     void info(String message){ log.info(message); }
     void error(String message){ log.error(message); }

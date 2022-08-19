@@ -17,16 +17,17 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import java.util.EnumSet;
 
 public class HarmonyMod {
+    public HarmonyMod(){ super(); }
     private static final Logger log = LoggerFactory.getLogger(HarmonyMod.class);
     private static void info(String message) { log.info(message); }
     public static JDA jda;
     public static DB db;
     public static BotConfig botConfig;
-    public HarmonyMod(){ super(); }
     public static CommandProcessor commandProcessor;
     public static ModalEventProcessor modalEventProcessor;
 
@@ -54,8 +55,10 @@ public class HarmonyMod {
 
         info("Ready");
         jda.getPresence().setActivity(Activity.playing("Harmonizing"));
-        PingLoop loop = new PingLoop();
-        Thread thread = new Thread(loop, "PingUpdate");
-        thread.start();
+        if (log.isTraceEnabled()) {
+            PingUpdates loop = new PingUpdates();
+            Thread thread = new Thread(loop, "PingUpdate");
+            thread.start();
+        }
     }
 }
