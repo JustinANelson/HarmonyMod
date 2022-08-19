@@ -1,12 +1,13 @@
 package com.justinnelson.harmonymod.core;
 
-import com.justinnelson.harmonymod.commands.commandprocessors.CommandProcessor;
-import com.justinnelson.harmonymod.commands.Commands;
+import com.justinnelson.harmonymod.core.utility.PingUpdates;
+import com.justinnelson.harmonymod.interactions.commands.commandprocessors.CommandProcessor;
+import com.justinnelson.harmonymod.interactions.commands.Commands;
 import com.justinnelson.harmonymod.data.AppConfig;
 import com.justinnelson.harmonymod.data.BotConfig;
-import com.justinnelson.harmonymod.db.DB;
-import com.justinnelson.harmonymod.events.ModalEventProcessor;
-import com.justinnelson.harmonymod.utility.Util;
+import com.justinnelson.harmonymod.data.db.DB;
+import com.justinnelson.harmonymod.interactions.events.eventprocessors.EventProcessor;
+import com.justinnelson.harmonymod.interactions.events.Events;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -17,7 +18,6 @@ import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 
 import java.util.EnumSet;
 
@@ -29,7 +29,7 @@ public class HarmonyMod {
     public static DB db;
     public static BotConfig botConfig;
     public static CommandProcessor commandProcessor;
-    public static ModalEventProcessor modalEventProcessor;
+    public static EventProcessor eventProcessor;
 
     public static void main(String[] args) throws Exception {
         jda = JDABuilder.create(AppConfig.TOKEN, EnumSet.allOf(GatewayIntent.class))
@@ -47,18 +47,24 @@ public class HarmonyMod {
         db = new DB();
         botConfig = new BotConfig();
         commandProcessor = new CommandProcessor();
-        modalEventProcessor = new ModalEventProcessor();
+        eventProcessor = new EventProcessor();
+
+        //Sync database and jda cache connected guilds
+        db.checkOnlineGuildsExist(jda);
 
         Commands.register();
-        Util.registerTestGuildParameters();
-        Util.registerGlobalCommands();
+        Events.register();
 
-        info("Ready");
+        //Uncomment only when new commands are added.
+        //Util.registerTestGuildParameters();
+        //Util.registerGlobalCommands();
+
         jda.getPresence().setActivity(Activity.playing("Harmonizing"));
         if (log.isTraceEnabled()) {
             PingUpdates loop = new PingUpdates();
             Thread thread = new Thread(loop, "PingUpdate");
             thread.start();
         }
+        info("Ready");
     }
 }

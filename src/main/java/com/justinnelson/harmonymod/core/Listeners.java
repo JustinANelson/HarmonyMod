@@ -2,10 +2,6 @@ package com.justinnelson.harmonymod.core;
 
 import static com.justinnelson.harmonymod.core.HarmonyMod.jda;
 
-import com.justinnelson.harmonymod.db.DB;
-import com.justinnelson.harmonymod.entities.GuildEntity;
-import com.justinnelson.harmonymod.events.eventprocessors.RoleButtonEventProcessor;
-
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.DisconnectEvent;
 import net.dv8tion.jda.api.events.ExceptionEvent;
@@ -263,19 +259,17 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onUserContextInteraction(@Nonnull UserContextInteractionEvent event) {
         super.onUserContextInteraction(event);
-        System.out.println("user context interaction");
         HarmonyMod.commandProcessor.process(event);
     }
     @Override
     public void onMessageContextInteraction(@Nonnull MessageContextInteractionEvent event) {
         super.onMessageContextInteraction(event);
-        System.out.println("message context interaction");
         HarmonyMod.commandProcessor.process(event);
     }
     @Override
     public void onButtonInteraction(@Nonnull ButtonInteractionEvent event) {
         super.onButtonInteraction(event);
-        RoleButtonEventProcessor.event(event);
+        HarmonyMod.eventProcessor.process(event);
     }
     @Override
     public void onSelectMenuInteraction(@Nonnull SelectMenuInteractionEvent event) {
@@ -288,7 +282,7 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onModalInteraction(@Nonnull ModalInteractionEvent event) {
         super.onModalInteraction(event);
-        HarmonyMod.modalEventProcessor.process(event);
+        HarmonyMod.eventProcessor.process(event);
     }
     @Override
     public void onUserUpdateName(@Nonnull UserUpdateNameEvent event) {
@@ -510,7 +504,7 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onGuildJoin(@Nonnull GuildJoinEvent event) {
         super.onGuildJoin(event);
-        HarmonyMod.db.checkGuildExists(event.getGuild());
+        HarmonyMod.db.checkJoinedGuildExists(event.getGuild());
     }
     @Override
     public void onGuildLeave(@Nonnull GuildLeaveEvent event) {

@@ -1,9 +1,12 @@
 package com.justinnelson.harmonymod.data;
 
+import java.util.Random;
+
 public class BotConfig {
     String supportServerID = AppConfig.SUPPORTSERVER;
     String alwaysOnPrefix = "Harmony";
     String defaultPrefix = "=";
+    public Random random = new Random();
 
     String customPrefix = defaultPrefix;
     boolean standardSuccess = false;
@@ -11,13 +14,17 @@ public class BotConfig {
     //Make prefix customizable on a per guild basis
     String[] allPrefixes = {customPrefix, alwaysOnPrefix};
 
-    public String getCustomPrefix() { return customPrefix; }
-    public void setCustomPrefix(String customPrefix) { this.customPrefix = customPrefix; }
+    public String getSupportServerID() {return supportServerID;}
+    public String getAlwaysOnPrefix() {return alwaysOnPrefix;}
+    public String getDefaultPrefix() {return defaultPrefix;}
+    public String getCustomPrefix() {return customPrefix;}
+    public boolean getStandardSuccess() {return standardSuccess;}
+    public String[] getAllPrefixes() {return allPrefixes;}
 
-    public boolean isStandardSuccess() {
-        return standardSuccess;
-    }
-    public void setStandardSuccess(boolean standardSuccess) { this.standardSuccess = standardSuccess; }
-
-
+    public void setSupportServerID(String supportServerID) {this.supportServerID = supportServerID;}
+    public void setAlwaysOnPrefix(String alwaysOnPrefix) {this.alwaysOnPrefix = alwaysOnPrefix;}
+    public void setDefaultPrefix(String defaultPrefix) {this.defaultPrefix = defaultPrefix;}
+    public void setCustomPrefix(String customPrefix) {this.customPrefix = customPrefix;}
+    public void setStandardSuccess(boolean standardSuccess) {this.standardSuccess = standardSuccess;}
+    public void setAllPrefixes(String[] allPrefixes) {this.allPrefixes = allPrefixes;}
 }
