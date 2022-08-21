@@ -12,14 +12,6 @@ import java.util.List;
 
 public class ButtonToggleRole extends AbstractButtonHandler {
 
-    public ButtonToggleRole() {
-        super(CommandCategory.MODERATION);
-    }
-
-    public ButtonToggleRole(String eventIDString, String label) {
-        super(CommandCategory.MODERATION);
-    }
-
     @Override
     public void handle(ButtonInteractionEvent event) {
         String roleName = event.getButton().getLabel();

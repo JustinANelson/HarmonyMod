@@ -34,7 +34,7 @@ public class SlashMod extends AbstractSlashCommander {
             embed.setColor(Color.CYAN);
             Member member = Objects.requireNonNull(event.getOption("mentionable")).getAsMember();
 
-            Instant created = member.getTimeCreated().toInstant();
+            Instant created = Objects.requireNonNull(member).getTimeCreated().toInstant();
             Instant join = member.getTimeJoined().toInstant();
             Instant now = Instant.now();
             Duration dCreated = Duration.between(created, now);
@@ -71,7 +71,17 @@ public class SlashMod extends AbstractSlashCommander {
                     ).queue();
         } else {
 
-        }
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setColor(Color.CYAN);
 
+            embed.setAuthor(Objects.requireNonNull(event.getMember()).getEffectiveName());
+            embed.addField("roles", String.valueOf(event.getMember().getRoles()), false);
+            embed.setThumbnail(event.getMember().getEffectiveAvatarUrl());
+            MessageEmbed msgEmbed = embed.build();
+            event.replyEmbeds(msgEmbed)
+                    .addActionRow(
+                            Button.primary("togglerole", "togglerole") // Button with only a label
+                    ).queue();
+        }
     }
 }

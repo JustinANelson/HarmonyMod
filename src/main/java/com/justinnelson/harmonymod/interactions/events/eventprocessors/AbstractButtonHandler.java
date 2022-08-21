@@ -3,6 +3,8 @@ package com.justinnelson.harmonymod.interactions.events.eventprocessors;
 import com.justinnelson.harmonymod.interactions.commands.CommandCategory;
 import com.justinnelson.harmonymod.interactions.events.Events;
 
+import net.dv8tion.jda.api.interactions.InteractionHook;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,10 +14,9 @@ public abstract class AbstractButtonHandler implements ButtonHandler {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     public String name = this.getClass().getSimpleName().toLowerCase(Locale.ROOT);
-    public final CommandCategory thisCategory;
+    public InteractionHook hook;
 
-    public AbstractButtonHandler(CommandCategory category) {
-        thisCategory = category;
+    public AbstractButtonHandler() {
         Events.registerButtons(this);
     }
 
@@ -31,5 +32,12 @@ public abstract class AbstractButtonHandler implements ButtonHandler {
     public String getName(){ return this.name; }
     public void logExecution() {
         trace(this.getClass().getSimpleName() + " executed.");
+    }
+
+    @Override
+    public InteractionHook getHook() {return hook;}
+    @Override
+    public void setHook(InteractionHook hook) {
+        this.hook = hook;
     }
 }
