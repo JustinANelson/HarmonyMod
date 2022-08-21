@@ -28,49 +28,50 @@ public class SlashMod extends AbstractSlashCommander {
     public void handle(SlashCommandInteractionEvent event) {
         logExecution();
 
-        ModerationEvent moderationEvent = new ModerationEvent();
-        moderationEvent.setName(event.getMember().getEffectiveName());
-        moderationEvent.setModPanelMember(Objects.requireNonNull(event.getOption("mentionable")).getAsMember());
-        moderationEvent.setHook(event.getHook());
-        HMCollections.moderationEvents.add(moderationEvent);
+        if (event.getOption("mentionable") != null) {
 
-        EmbedBuilder embed = new EmbedBuilder();
-        embed.setColor(Color.CYAN);
-        Member member = moderationEvent.getModPanelMember();
+            EmbedBuilder embed = new EmbedBuilder();
+            embed.setColor(Color.CYAN);
+            Member member = Objects.requireNonNull(event.getOption("mentionable")).getAsMember();
 
-        Instant created = member.getTimeCreated().toInstant();
-        Instant join = member.getTimeJoined().toInstant();
-        Instant now = Instant.now();
-        Duration dCreated = Duration.between(created, now);
-        Duration dJoin = Duration.between(join, now);
-        String createdAge = Util.formatDuration(dCreated);
-        String joinAge = Util.formatDuration(dJoin);
+            Instant created = member.getTimeCreated().toInstant();
+            Instant join = member.getTimeJoined().toInstant();
+            Instant now = Instant.now();
+            Duration dCreated = Duration.between(created, now);
+            Duration dJoin = Duration.between(join, now);
+            String createdAge = Util.formatDuration(dCreated);
+            String joinAge = Util.formatDuration(dJoin);
 
-        embed.setAuthor(member.getEffectiveName());
+            embed.setAuthor(member.getEffectiveName());
 
-        embed.addField("id", member.getId(), true);
-        embed.addField("avatar", "[Link](" + member.getEffectiveAvatarUrl() + ")", true);
-        embed.addField("account created", member.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME), true);
-        embed.addField("account age", createdAge, true);
-        embed.addField("joined server at", member.getTimeJoined().format(DateTimeFormatter.RFC_1123_DATE_TIME), true);
-        embed.addField("join server age", joinAge, true);
-        embed.addField("status", member.getOnlineStatus().toString(), false);
-        embed.addField("role", String.valueOf(member.getRoles()), false);
-        embed.setFooter("id: " + event.getId());
-        embed.setThumbnail(member.getEffectiveAvatarUrl());
-        MessageEmbed msgEmbed = embed.build();
-        event.replyEmbeds(msgEmbed)
-                .addActionRow(
-                        Button.primary("mute", "mute"), // Button with only a label
-                        Button.primary("timeout", "timeout"), // Button with only a label
-                        Button.primary("nickname", "nickname") // Button with only a label
-                ).addActionRow(
-                        Button.primary("lookup", "lookup"), // Button with only a label
-                        Button.primary("ban", "ban")// Button with only a label
-                ).addActionRow(
-                        Button.primary("kick", "kick"), // Button with only a label
-                        Button.primary("warn", "warn"), // Button with only a label
-                        Button.primary("moderations", "moderations")// Button with only a label
-                ).queue();
+            embed.addField("id", member.getId(), true);
+            embed.addField("avatar", "[Link](" + member.getEffectiveAvatarUrl() + ")", true);
+            embed.addField("account created", member.getTimeCreated().format(DateTimeFormatter.RFC_1123_DATE_TIME), true);
+            embed.addField("account age", createdAge, true);
+            embed.addField("joined server at", member.getTimeJoined().format(DateTimeFormatter.RFC_1123_DATE_TIME), true);
+            embed.addField("join server age", joinAge, true);
+            embed.addField("status", member.getOnlineStatus().toString(), false);
+            embed.addField("roles", String.valueOf(member.getRoles()), false);
+            embed.setFooter("id: " + event.getId());
+            embed.setThumbnail(member.getEffectiveAvatarUrl());
+            MessageEmbed msgEmbed = embed.build();
+            event.replyEmbeds(msgEmbed)
+                    .addActionRow(
+                            Button.primary("panelmute", "mute"), // Button with only a label
+                            Button.primary("paneltimeout", "timeout"), // Button with only a label
+                            Button.primary("panelnickname", "nickname") // Button with only a label
+                    ).addActionRow(
+                            Button.primary("panellookup", "lookup"), // Button with only a label
+                            Button.primary("panelban", "ban"),// Button with only a label
+                            Button.primary("panelcopyid", "copyid")
+                    ).addActionRow(
+                            Button.primary("panelkick", "kick"), // Button with only a label
+                            Button.primary("panelwarn", "warn"), // Button with only a label
+                            Button.primary("panelmoderations", "moderations")// Button with only a label
+                    ).queue();
+        } else {
+
+        }
+
     }
 }

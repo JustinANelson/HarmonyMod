@@ -1,6 +1,6 @@
-package com.justinnelson.harmonymod.data.db.dto;
+package com.justinnelson.harmonymod.data.entities;
 
-public class ModerationDTO {
+public class ModLogEntity {
 
     public String guildID;
     public String targetID;

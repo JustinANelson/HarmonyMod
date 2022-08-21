@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.justinnelson.harmonymod.data.AppConfig;
 import com.justinnelson.harmonymod.data.HMCollections;
 import com.justinnelson.harmonymod.data.db.dto.GuildDataDTO;
-import com.justinnelson.harmonymod.data.db.dto.ModerationDTO;
+import com.justinnelson.harmonymod.data.db.dto.ModLogDTO;
 import com.justinnelson.harmonymod.data.db.dto.UserDataDTO;
 import com.justinnelson.harmonymod.data.entities.GuildDataEntity;
 import com.justinnelson.harmonymod.data.entities.ModerationEntity;
@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -138,11 +139,15 @@ public class DB {
     public void addUserDataTODB(UserDataEntity userDataEntity) {
         UserDataDTO userDataDTO = new UserDataDTO();
         userDataDTO.id = userDataEntity.getId();
-        userDataDTO.name = userDataEntity.getName();
-        userDataDTO.timeCreated = userDataEntity.getTimeCreated();
+        userDataDTO.nicknames = userDataEntity.getNicknames();
     }
     public void addModerationTODB(ModerationEntity moderationEntity) {
-        ModerationDTO moderationDTO = new ModerationDTO();
-        moderationDTO.moderationID = moderationEntity.moderationID;
+        ModLogDTO modLogDTO = new ModLogDTO();
+        modLogDTO.moderationID = moderationEntity.getModerationID();
+        modLogDTO.guildID = moderationEntity.getGuildID();
+        modLogDTO.targetID = moderationEntity.getTargetID();
+        modLogDTO.actorID = moderationEntity.getActorID();
+        modLogDTO.typeOfModeration = moderationEntity.getTypeOfModeration();
+        modLogDTO.moderationMessage = moderationEntity.getModerationMessage();
     }
 }

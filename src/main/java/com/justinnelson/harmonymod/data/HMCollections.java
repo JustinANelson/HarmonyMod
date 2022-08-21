@@ -8,7 +8,6 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class HMCollections {
 
@@ -26,5 +25,5 @@ public class HMCollections {
     //BOT CACHE
     public static ArrayList<GuildDataEntity> cachedGuilds = new ArrayList<>();
 
-    public static HashSet<Long> generatedModerationIDs = new HashSet<>();
+
 }
