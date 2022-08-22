@@ -13,7 +13,7 @@ import java.util.List;
 public class ButtonToggleRole extends AbstractButtonHandler {
 
     @Override
-    public void handle(ButtonInteractionEvent event) {
+    public void handle(ButtonInteractionEvent event, String id) {
         String roleName = event.getButton().getLabel();
         Member member = event.getMember();
         List<Role> roles = event.getGuild().getRolesByName(roleName, true);

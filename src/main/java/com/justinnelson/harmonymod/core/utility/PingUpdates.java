@@ -25,7 +25,7 @@ public class PingUpdates implements Runnable{
         while (true) {
             message = null;
             try {
-                Thread.sleep(20000);
+                Thread.sleep(60000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

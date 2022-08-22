@@ -1,6 +1,7 @@
 package com.justinnelson.harmonymod.data;
 
 import com.justinnelson.harmonymod.data.entities.GuildDataEntity;
+import com.justinnelson.harmonymod.data.entities.helpers.ModInteractionHook;
 import com.justinnelson.harmonymod.interactions.events.customevents.ModerationEvent;
 
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -24,6 +25,6 @@ public class HMCollections {
 
     //BOT CACHE
     public static ArrayList<GuildDataEntity> cachedGuilds = new ArrayList<>();
-
+    public static ArrayList<ModInteractionHook> modInteractionHooks = new ArrayList<>();
 
 }

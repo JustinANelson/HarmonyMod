@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionE
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
 
 import java.awt.Color;
 import java.time.Duration;
@@ -74,6 +75,9 @@ public class Util {
         event.replyEmbeds(basicMessageEmbed("Success. Thank you for using Harmony MOD.")).setEphemeral(true).queue();
     }
     public static void standardSuccess(ModalInteractionEvent event){
+        event.replyEmbeds(basicMessageEmbed("Success. Thank you for using Harmony MOD.")).setEphemeral(true).queue();
+    }
+    public static void standardSuccess(SelectMenuInteractionEvent event) {
         event.replyEmbeds(basicMessageEmbed("Success. Thank you for using Harmony MOD.")).setEphemeral(true).queue();
     }
 

@@ -25,7 +25,7 @@ public class AppConfig {
         Properties prop  = new Properties();
         InputStream is;
         try {
-            is = HarmonyMod.class.getClassLoader().getResourceAsStream("config.properties");
+            is = HarmonyMod.class.getClassLoader().getResourceAsStream("canary.properties");
             if (!Objects.isNull(is)) {
                 log.debug("Config file found.");
                 prop.load(is);

@@ -12,7 +12,7 @@ import java.awt.datatransfer.StringSelection;
 public class ButtonPanelCopyID extends AbstractButtonHandler {
 
     @Override
-    public void handle(ButtonInteractionEvent event) {
+    public void handle(ButtonInteractionEvent event, String id) {
 
         logExecution();
         StringSelection stringSelection = new StringSelection(event.getButton().getId());

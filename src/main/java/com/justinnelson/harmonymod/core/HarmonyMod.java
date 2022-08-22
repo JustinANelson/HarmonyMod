@@ -1,6 +1,7 @@
 package com.justinnelson.harmonymod.core;
 
 import com.justinnelson.harmonymod.core.utility.PingUpdates;
+import com.justinnelson.harmonymod.core.utility.Util;
 import com.justinnelson.harmonymod.interactions.commands.commandprocessors.CommandProcessor;
 import com.justinnelson.harmonymod.interactions.commands.Commands;
 import com.justinnelson.harmonymod.data.AppConfig;
@@ -56,8 +57,8 @@ public class HarmonyMod {
         Events.register();
 
         //Uncomment only when new commands are added.
-        //Util.registerTestGuildParameters();
-        //Util.registerGlobalCommands();
+        Util.registerTestGuildParameters();
+        Util.registerGlobalCommands();
 
         jda.getPresence().setActivity(Activity.playing("Harmonizing"));
         if (log.isTraceEnabled()) {

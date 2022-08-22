@@ -1,5 +1,6 @@
 package com.justinnelson.harmonymod.interactions.commands.slash;
 
+import com.justinnelson.harmonymod.data.entities.helpers.ModInteractionHook;
 import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractSlashCommander;
 import com.justinnelson.harmonymod.interactions.commands.CommandCategory;
 import com.justinnelson.harmonymod.data.HMCollections;
@@ -8,9 +9,12 @@ import com.justinnelson.harmonymod.core.utility.Util;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.requests.RestAction;
 
 import java.awt.Color;
 import java.time.Duration;
@@ -20,6 +24,9 @@ import java.util.Objects;
 
 public class SlashMod extends AbstractSlashCommander {
 
+    String id;
+    RestAction<Message> message;
+
     public SlashMod() {
         super(CommandCategory.MODERATION);
     }
@@ -27,8 +34,15 @@ public class SlashMod extends AbstractSlashCommander {
     @Override
     public void handle(SlashCommandInteractionEvent event) {
         logExecution();
-
+        System.out.println(event.getInteraction().toString());
         if (event.getOption("mentionable") != null) {
+            InteractionHook hook = event.getHook();
+            String target = event.getOption("mentionable").getAsMember().getId();
+            String moderator = event.getMember().getId();
+            String token = event.getToken();
+
+            ModInteractionHook modHook = new ModInteractionHook(hook, target, moderator);
+            HMCollections.modInteractionHooks.add(modHook);
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.CYAN);
@@ -57,7 +71,7 @@ public class SlashMod extends AbstractSlashCommander {
             MessageEmbed msgEmbed = embed.build();
             event.replyEmbeds(msgEmbed)
                     .addActionRow(
-                            Button.primary("panelmute", "mute"), // Button with only a label
+                            Button.primary( target+"panelmute", "(un)mute"), // Button with only a label
                             Button.primary("paneltimeout", "timeout"), // Button with only a label
                             Button.primary("panelnickname", "nickname") // Button with only a label
                     ).addActionRow(
@@ -68,7 +82,7 @@ public class SlashMod extends AbstractSlashCommander {
                             Button.primary("panelkick", "kick"), // Button with only a label
                             Button.primary("panelwarn", "warn"), // Button with only a label
                             Button.primary("panelmoderations", "moderations")// Button with only a label
-                    ).queue();
+                    ).queue(e -> message = e.retrieveOriginal());
         } else {
 
             EmbedBuilder embed = new EmbedBuilder();
@@ -80,7 +94,9 @@ public class SlashMod extends AbstractSlashCommander {
             MessageEmbed msgEmbed = embed.build();
             event.replyEmbeds(msgEmbed)
                     .addActionRow(
-                            Button.primary("togglerole", "togglerole") // Button with only a label
+                            Button.primary("togglerole", "togglerole"), // Button with only a label
+                            Button.primary("fixpermissions", "fixperms"),
+                            Button.primary("resetpermissions", "resetperms")
                     ).queue();
         }
     }

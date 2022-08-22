@@ -2,6 +2,8 @@ package com.justinnelson.harmonymod.core;
 
 import static com.justinnelson.harmonymod.core.HarmonyMod.jda;
 
+import com.justinnelson.harmonymod.interactions.events.eventprocessors.EventProcessor;
+
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.DisconnectEvent;
 import net.dv8tion.jda.api.events.ExceptionEvent;
@@ -274,6 +276,7 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onSelectMenuInteraction(@Nonnull SelectMenuInteractionEvent event) {
         super.onSelectMenuInteraction(event);
+        HarmonyMod.eventProcessor.process(event);
     }
     @Override
     public void onCommandAutoCompleteInteraction(@Nonnull CommandAutoCompleteInteractionEvent event) {

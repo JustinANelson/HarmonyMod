@@ -1,12 +1,12 @@
 package com.justinnelson.harmonymod.interactions.events.customevents;
 
-import com.justinnelson.harmonymod.data.entities.ModerationEntity;
+import com.justinnelson.harmonymod.data.entities.ModLogEntity;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 
 public class ModerationEvent {
-    ModerationEntity moderationEntity;
+    ModLogEntity modLogEntity;
     String name;
     Member modPanelMember;
     boolean muteFlag;
