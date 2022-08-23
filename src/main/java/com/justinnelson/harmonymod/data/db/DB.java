@@ -47,6 +47,7 @@ public class DB {
 
     private static Gson gsonGuildDataDTO = new GsonBuilder().serializeNulls().create();
     private static Gson gsonUserDataDTO = new GsonBuilder().serializeNulls().create();
+    private static Gson gsonNewModLogDTO = new GsonBuilder().serializeNulls().create();
 
     public DB() {
         dbClient = connect();
@@ -140,13 +141,27 @@ public class DB {
         userDataDTO.id = userDataEntity.getId();
         userDataDTO.nicknames = userDataEntity.getNicknames();
     }
-    public void addModerationTODB(ModLogEntity modLogEntity) {
+    public void newModLogEntry(ModLogEntity modLogEntity) {
+
         ModLogDTO modLogDTO = new ModLogDTO();
+        modLogDTO.logTime = modLogEntity.getLogTime();
         modLogDTO.moderationID = modLogEntity.getModerationID();
         modLogDTO.guildID = modLogEntity.getGuildID();
         modLogDTO.targetID = modLogEntity.getTargetID();
-        modLogDTO.actorID = modLogEntity.getActorID();
+        modLogDTO.modID = modLogEntity.getModID();;
         modLogDTO.typeOfModeration = modLogEntity.getTypeOfModeration();
         modLogDTO.moderationMessage = modLogEntity.getModerationMessage();
+
+        String json = gsonNewModLogDTO.toJson(modLogDTO);
+        Document doc = Document.parse(json);
+        try {
+            dbDatabase.getCollection("modlogs").insertOne(doc);
+        }
+        catch (MongoServerException ex) {
+            error(ex.getMessage());
+        }
+        debug("Mod Log Entry created: " + modLogEntity.toString()  + ".");
+
+
     }
 }

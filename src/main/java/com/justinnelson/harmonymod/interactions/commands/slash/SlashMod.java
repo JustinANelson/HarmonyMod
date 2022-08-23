@@ -72,18 +72,18 @@ public class SlashMod extends AbstractSlashCommander {
             event.replyEmbeds(msgEmbed)
                     .addActionRow(
                             Button.primary( target+"panelmute", "(un)mute"), // Button with only a label
-                            Button.primary("paneltimeout", "timeout"), // Button with only a label
-                            Button.primary("panelnickname", "nickname") // Button with only a label
+                            Button.primary(target+"paneltimeout", "timeout"), // Button with only a label
+                            Button.primary(target+"panelnickname", "nickname") // Button with only a label
                     ).addActionRow(
-                            Button.primary("panellookup", "lookup"), // Button with only a label
-                            Button.primary("panelban", "ban"),// Button with only a label
-                            Button.primary("panelcopyid", "copyid")
+                            Button.primary(target+"panellookup", "lookup"), // Button with only a label
+                            Button.primary(target+"panelban", "ban")// Button with only a label
                     ).addActionRow(
-                            Button.primary("panelkick", "kick"), // Button with only a label
-                            Button.primary("panelwarn", "warn"), // Button with only a label
-                            Button.primary("panelmoderations", "moderations")// Button with only a label
+                            Button.primary(target+"panelkick", "kick"), // Button with only a label
+                            Button.primary(target+"panelwarn", "warn"), // Button with only a label
+                            Button.primary(target+"panelmoderations", "moderations")// Button with only a label
                     ).queue(e -> message = e.retrieveOriginal());
         } else {
+            String moderator = event.getMember().getId();
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.CYAN);
@@ -94,9 +94,9 @@ public class SlashMod extends AbstractSlashCommander {
             MessageEmbed msgEmbed = embed.build();
             event.replyEmbeds(msgEmbed)
                     .addActionRow(
-                            Button.primary("togglerole", "togglerole"), // Button with only a label
-                            Button.primary("fixpermissions", "fixperms"),
-                            Button.primary("resetpermissions", "resetperms")
+                            Button.primary(moderator+"togglerole", "togglerole"), // Button with only a label
+                            Button.primary(moderator+"fixpermissions", "fixperms"),
+                            Button.primary(moderator+"resetpermissions", "resetperms")
                     ).queue();
         }
     }
