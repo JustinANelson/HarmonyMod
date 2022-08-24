@@ -40,7 +40,6 @@ public class ModLogEntity {
         else {
             this.moderationMessage = message;
         }
-        System.out.println(this.logTime);
     }
 
     //Moderation without a message

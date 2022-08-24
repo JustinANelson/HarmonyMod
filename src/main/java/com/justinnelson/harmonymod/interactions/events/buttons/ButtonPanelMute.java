@@ -7,10 +7,19 @@ import com.justinnelson.harmonymod.data.entities.helpers.ModInteractionHook;
 import com.justinnelson.harmonymod.data.entities.helpers.TypeOfModeration;
 import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractButtonHandler;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
+
+import java.awt.Color;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class ButtonPanelMute extends AbstractButtonHandler {
 
@@ -19,6 +28,7 @@ public class ButtonPanelMute extends AbstractButtonHandler {
         logExecution();
 
         Member member = event.getGuild().getMemberById(id);
+
         Role role = event.getGuild().getRoles().stream()
                 .filter(r -> r.getName().equalsIgnoreCase("muted")).findFirst()
                 .orElse(null);
@@ -27,6 +37,7 @@ public class ButtonPanelMute extends AbstractButtonHandler {
 
             //add all removed roles from member
             event.getGuild().removeRoleFromMember(member, role).queue();
+
             ModLogEntity  modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),
                     TypeOfModeration.MUTE, "Actin' a fool.");
             HarmonyMod.db.newModLogEntry(modLogEntity);

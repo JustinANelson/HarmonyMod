@@ -24,9 +24,6 @@ import java.util.Objects;
 
 public class SlashMod extends AbstractSlashCommander {
 
-    String id;
-    RestAction<Message> message;
-
     public SlashMod() {
         super(CommandCategory.MODERATION);
     }
@@ -34,12 +31,11 @@ public class SlashMod extends AbstractSlashCommander {
     @Override
     public void handle(SlashCommandInteractionEvent event) {
         logExecution();
-        System.out.println(event.getInteraction().toString());
+
         if (event.getOption("mentionable") != null) {
             InteractionHook hook = event.getHook();
             String target = event.getOption("mentionable").getAsMember().getId();
             String moderator = event.getMember().getId();
-            String token = event.getToken();
 
             ModInteractionHook modHook = new ModInteractionHook(hook, target, moderator);
             HMCollections.modInteractionHooks.add(modHook);
@@ -81,7 +77,7 @@ public class SlashMod extends AbstractSlashCommander {
                             Button.primary(target+"panelkick", "kick"), // Button with only a label
                             Button.primary(target+"panelwarn", "warn"), // Button with only a label
                             Button.primary(target+"panelmoderations", "moderations")// Button with only a label
-                    ).queue(e -> message = e.retrieveOriginal());
+                    ).queue();
         } else {
             String moderator = event.getMember().getId();
 

@@ -13,11 +13,9 @@ public class EventProcessor {
 
     public void process(ButtonInteractionEvent event) {
 
-        System.out.println(event.getButton().getId());
         final var start = System.nanoTime();
         var id = event.getButton().getId().substring(0, 18);
         var eventName = "button" + event.getButton().getId().substring(18);
-        System.out.println(eventName);
         Events.buttonEvents.stream()
                 .filter(s -> eventName.equals(s.getName()))
                 .findAny().ifPresent(e -> e.handle(event, id));
@@ -35,7 +33,6 @@ public class EventProcessor {
     }
     public void process(SelectMenuInteractionEvent event) {
 
-        System.out.println(event.getComponent().getId());
         final var start = System.nanoTime();
         var eventName = "selectmenu" + event.getComponent().getId();
         Events.selectMenuEvents.stream()

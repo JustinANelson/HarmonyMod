@@ -28,7 +28,6 @@ public class ModInteractionHook {
         this.target = target;
         this.moderator = moderator;
         this.start = Instant.now();
-        System.out.println(this.start);
 
     }
 
