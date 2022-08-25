@@ -1,6 +1,6 @@
 package com.justinnelson.harmonymod.interactions.events.moderations;
 
-import com.justinnelson.harmonymod.interactions.commands.CommandCategory;
+import com.justinnelson.harmonymod.interactions.commands.commandprocessors.CommandCategory;
 import com.justinnelson.harmonymod.interactions.events.customevents.ModerationEvent;
 import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractModerationHandler;
 

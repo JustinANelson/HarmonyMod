@@ -1,33 +1,28 @@
-package com.justinnelson.harmonymod.interactions.events.buttons;
+package com.justinnelson.harmonymod.interactions.commands;
 
 import com.justinnelson.harmonymod.core.HarmonyMod;
 import com.justinnelson.harmonymod.core.utility.Util;
 import com.justinnelson.harmonymod.data.entities.ModLogEntity;
-import com.justinnelson.harmonymod.data.entities.helpers.ModInteractionHook;
 import com.justinnelson.harmonymod.data.entities.helpers.TypeOfModeration;
-import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractButtonHandler;
+import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractCommand;
 
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
 
-import java.awt.Color;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
+public class UserContextCommands extends AbstractCommand {
 
-public class ButtonPanelMute extends AbstractButtonHandler {
+    public void handle(UserContextInteractionEvent event) {
 
-    @Override
-    public void handle(ButtonInteractionEvent event, String id) {
-        logExecution();
+        String name = event.getName();
+        switch (name) {
+            case "mute": userContextMute(event); break;
+            default:
+        }
+    }
+    public void userContextMute(UserContextInteractionEvent event) {
 
-        Member member = event.getGuild().getMemberById(id);
+        Member member = event.getTargetMember();
 
         Role role = event.getGuild().getRoles().stream()
                 .filter(r -> r.getName().equalsIgnoreCase("muted")).findFirst()
@@ -38,7 +33,7 @@ public class ButtonPanelMute extends AbstractButtonHandler {
             //TODO - add all removed roles from member
             event.getGuild().removeRoleFromMember(member, role).queue();
 
-            ModLogEntity  modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),
+            ModLogEntity modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),
                     TypeOfModeration.MUTE, "Actin' a fool.");
             HarmonyMod.db.newModLogEntry(modLogEntity);
 
@@ -54,5 +49,6 @@ public class ButtonPanelMute extends AbstractButtonHandler {
         }
 
         Util.standardSuccess(event);
+
     }
 }

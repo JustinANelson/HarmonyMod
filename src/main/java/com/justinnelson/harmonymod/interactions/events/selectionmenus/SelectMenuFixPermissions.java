@@ -31,10 +31,31 @@ public class SelectMenuFixPermissions extends AbstractSelectMenuHandler {
                             .deny(Permission.MESSAGE_SEND_IN_THREADS)
                             .queue();
                 }
+                if(channel.getType() == ChannelType.VOICE) {
+                    channel.getPermissionContainer()
+                            .upsertPermissionOverride(((event.getGuild().getRoles().stream()
+                                    .filter(role -> role.getName().equalsIgnoreCase("muted")).findFirst()
+                                    .orElse(null))))
+                            .deny(Permission.VOICE_SPEAK)
+                            .deny(Permission.VOICE_START_ACTIVITIES)
+                            .deny(Permission.VOICE_STREAM)
+                            .queue();
+                }
+                if(channel.getType() == ChannelType.VOICE) {
+                    channel.getPermissionContainer()
+                            .upsertPermissionOverride(((event.getGuild().getRoles().stream()
+                                    .filter(role -> role.getName().equalsIgnoreCase("muted")).findFirst()
+                                    .orElse(null))))
+                            .deny(Permission.VOICE_SPEAK)
+                            .deny(Permission.VOICE_START_ACTIVITIES)
+                            .deny(Permission.VOICE_STREAM)
+                            .queue();
+                }
             });
             Util.standardSuccess(event);
         } else if(event.getValues().contains("timeout")) {
             event.getGuild().getChannels(false).forEach(channel -> {
+                //TODO add channel exceptions per guild for airlock channel.
                 if(channel.getType() == ChannelType.TEXT) {
                     channel.getPermissionContainer()
                             .upsertPermissionOverride(Objects.requireNonNull(event.getGuild().getRoles().stream()

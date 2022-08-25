@@ -1,6 +1,5 @@
 package com.justinnelson.harmonymod.interactions.events.eventprocessors;
 
-import com.justinnelson.harmonymod.interactions.commands.CommandCategory;
 import com.justinnelson.harmonymod.interactions.events.Events;
 
 import net.dv8tion.jda.api.interactions.InteractionHook;

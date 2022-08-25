@@ -1,6 +1,6 @@
 package com.justinnelson.harmonymod.interactions.events.eventprocessors;
 
-import com.justinnelson.harmonymod.interactions.commands.CommandCategory;
+import com.justinnelson.harmonymod.interactions.commands.commandprocessors.CommandCategory;
 import com.justinnelson.harmonymod.interactions.events.Events;
 
 import org.slf4j.Logger;

@@ -53,12 +53,11 @@ public class HarmonyMod {
         //Sync database and jda cache connected guilds
         db.checkOnlineGuildsExist(jda);
 
-        Commands.register();
         Events.register();
 
         //Uncomment only when new commands are added.
-        Util.registerTestGuildParameters();
-        Util.registerGlobalCommands();
+        //Util.registerTestGuildParameters();
+        //Util.registerGlobalCommands();
 
         jda.getPresence().setActivity(Activity.playing("Harmonizing"));
         if (log.isTraceEnabled()) {

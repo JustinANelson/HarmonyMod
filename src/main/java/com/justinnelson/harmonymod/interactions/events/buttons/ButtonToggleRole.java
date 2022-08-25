@@ -1,6 +1,5 @@
 package com.justinnelson.harmonymod.interactions.events.buttons;
 
-import com.justinnelson.harmonymod.interactions.commands.CommandCategory;
 import com.justinnelson.harmonymod.core.utility.Util;
 import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractButtonHandler;
 

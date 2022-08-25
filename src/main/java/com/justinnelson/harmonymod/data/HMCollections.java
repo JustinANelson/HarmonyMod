@@ -12,6 +12,9 @@ import java.util.ArrayList;
 
 public class HMCollections {
 
+    //SlashCommands
+    public static ArrayList<String> slashCommandNames = new ArrayList<>();
+
     //COMMANDS
     public static ArrayList<SlashCommandData> slashCommands = new ArrayList<>();
     public static ArrayList<CommandData> userContextCommands = new ArrayList<>();
