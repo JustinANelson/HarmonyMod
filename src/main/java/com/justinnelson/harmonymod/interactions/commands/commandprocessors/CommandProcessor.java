@@ -5,8 +5,11 @@ import com.justinnelson.harmonymod.interactions.commands.Commands;
 import com.justinnelson.harmonymod.core.HarmonyMod;
 import com.justinnelson.harmonymod.data.Metrics;
 import com.justinnelson.harmonymod.interactions.commands.MessageContextCommands;
+import com.justinnelson.harmonymod.interactions.commands.MessageReceivedCommands;
 import com.justinnelson.harmonymod.interactions.commands.SlashCommands;
 import com.justinnelson.harmonymod.interactions.commands.UserContextCommands;
+import com.justinnelson.harmonymod.interactions.commands.customcommands.MessageReceivedInteractionEvent;
+import com.justinnelson.harmonymod.utility.Util;
 
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -27,12 +30,14 @@ public class CommandProcessor {
 
     SlashCommands slashCommands;
     MessageContextCommands messageContextCommands;
+    MessageReceivedCommands messageReceivedCommands;
     UserContextCommands userContextCommands;
 
     public CommandProcessor() {
         Commands.create();
         slashCommands = new SlashCommands();
         messageContextCommands = new MessageContextCommands();
+        messageReceivedCommands = new MessageReceivedCommands();
         userContextCommands = new UserContextCommands();
     }
     public void process(SlashCommandInteractionEvent event){
@@ -47,7 +52,7 @@ public class CommandProcessor {
         if (HMCollections.slashCommands.stream().map(e -> e.getName().contains(event.getName()))
                 .findAny()
                 .isPresent()) {
-            logExecution(event.getName());
+            Util.logExecution(event.getMember().getEffectiveName(), event.getName());
         }
         else { return; }
 
@@ -72,7 +77,7 @@ public class CommandProcessor {
         if (HMCollections.userContextCommands.stream().map(e -> e.getName().contains(event.getName()))
                 .findAny()
                 .isPresent()) {
-            logExecution(event.getName());
+            Util.logExecution(event.getMember().getEffectiveName(), event.getName());
         }
         else { return; }
 
@@ -98,7 +103,7 @@ public class CommandProcessor {
         if (HMCollections.messageContextCommands.stream().map(e -> e.getName().contains(event.getName()))
                 .findAny()
                 .isPresent()) {
-            logExecution(event.getName());
+            Util.logExecution(event.getMember().getEffectiveName(), event.getName());
         }
         else { return; }
 
@@ -111,13 +116,8 @@ public class CommandProcessor {
         Metrics.commandCounter();
 
     }
-
-    /*
-    public void process(MessageReceivedEvent event) {
+    public void process(MessageReceivedInteractionEvent event) {
         if (event.getGuild() == null) {
-            event.getChannel()
-                    .sendMessage("This bot does not accept commands in Private Messages. Please add it to your guild.")
-                    .queue();
             return;
         }
         String content = event.getMessage().getContentRaw();
@@ -125,18 +125,11 @@ public class CommandProcessor {
         String command = strings[0].substring(HarmonyMod.botConfig.getCustomPrefix().length());
 
         final var start = System.nanoTime();
-        var eventName = "messagereceived" + command;
-        Commands.messageReceivedCommands.stream()
-                .filter(s -> eventName.equals(s.getName()))
-                .findAny().ifPresent(e -> e.handle(event));
+
+        messageReceivedCommands.handle(event);
 
         final var end = System.nanoTime();
         Metrics.latency(start, end, strings[0]);
         Metrics.commandCounter();
-    }
-    */
-
-    public void logExecution(String name) {
-        trace(name + " executed.");
     }
 }

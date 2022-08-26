@@ -1,4 +1,6 @@
-package com.justinnelson.harmonymod.interactions.commands.commandprocessors;
+package com.justinnelson.harmonymod.interactions.commands.helpers;
+
+import com.justinnelson.harmonymod.interactions.commands.helpers.CommandPermission;
 
 public enum CommandCategory {
     ADMIN(CommandPermission.ADMIN, "categories.admin", "Admin"),

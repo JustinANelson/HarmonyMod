@@ -2,6 +2,7 @@ package com.justinnelson.harmonymod.core;
 
 import static com.justinnelson.harmonymod.core.HarmonyMod.jda;
 
+import com.justinnelson.harmonymod.interactions.commands.customcommands.MessageReceivedInteractionEvent;
 import com.justinnelson.harmonymod.interactions.events.eventprocessors.EventProcessor;
 
 import net.dv8tion.jda.api.entities.Activity;
@@ -346,9 +347,10 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         super.onMessageReceived(event);
+        //TODO set first element of split string array as command name
         if (event.getMessage().getContentStripped().startsWith(HarmonyMod.botConfig.getCustomPrefix())){
-            //TODO deal with message received events.
-            //HarmonyMod.commandProcessor.process(event);
+            MessageReceivedInteractionEvent newEvent = new MessageReceivedInteractionEvent(event);
+            HarmonyMod.commandProcessor.process(newEvent);
         }
     }
     @Override

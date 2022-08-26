@@ -1,15 +1,9 @@
-package com.justinnelson.harmonymod.core.utility;
+package com.justinnelson.harmonymod.utility;
 
 import static com.justinnelson.harmonymod.core.HarmonyMod.jda;
 
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.internal.entities.ActivityImpl;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class PingUpdates implements Runnable{
     private final Logger log = LoggerFactory.getLogger(this.getClass());

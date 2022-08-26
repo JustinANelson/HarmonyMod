@@ -1,12 +1,38 @@
 package com.justinnelson.harmonymod.data.entities;
 
+import com.justinnelson.harmonymod.data.entities.helpers.AutoResponse;
+
 import net.dv8tion.jda.api.entities.Guild;
 
 public class GuildDataEntity {
-    String id;
-    String name;
-    String ownerID;
-    boolean online;
+    //Default module
+    private String id;
+    private String name;
+    private String ownerID;
+    private boolean online;
+    private boolean isPremium;
+    private String feedBackCHannel;
+
+    //Logging module
+    private String logServerJoinLeftChannel;
+    private String logInviteChannel;
+    private String logDeleteChannel;
+    private String logEditChannel;
+
+    //Managed mute module
+    private String muteChannel;
+    private String mutedRole;
+    private String timeoutChannel;
+    private String timeoutRole;
+
+    //Auto responder module
+    private AutoResponse[] autoResponses;
+
+    //Moderation module
+    private String[] moderatorRoles;
+    private String logModerationChannel;
+    private String logBanChannel;
+    private String logKickChannel;
 
     public GuildDataEntity(Guild guild) {
         this.id = guild.getId();

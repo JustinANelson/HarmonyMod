@@ -1,9 +1,7 @@
 package com.justinnelson.harmonymod.interactions.commands;
 
 import com.justinnelson.harmonymod.core.HarmonyMod;
-import com.justinnelson.harmonymod.core.utility.Util;
-import com.justinnelson.harmonymod.data.HMCollections;
-import com.justinnelson.harmonymod.data.entities.helpers.ModInteractionHook;
+import com.justinnelson.harmonymod.utility.Util;
 import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractCommand;
 
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -43,6 +41,7 @@ public class SlashCommands extends AbstractCommand {
             case "echo": slashEcho(event); break;
             case "feedback": slashFeedback(event); break;
             case "mod": slashMod(event); break;
+            case "manager": slashManager(event); break;
             case "ping": slashPing(event); break;
             case "prefix": slashPrefix(event); break;
             case "purge": slashPurge(event); break;
@@ -87,9 +86,6 @@ public class SlashCommands extends AbstractCommand {
             InteractionHook hook = event.getHook();
             String target = event.getOption("mentionable").getAsMember().getId();
             String moderator = event.getMember().getId();
-
-            ModInteractionHook modHook = new ModInteractionHook(hook, target, moderator);
-            HMCollections.modInteractionHooks.add(modHook);
 
             EmbedBuilder embed = new EmbedBuilder();
             embed.setColor(Color.CYAN);
@@ -141,12 +137,34 @@ public class SlashCommands extends AbstractCommand {
             MessageEmbed msgEmbed = embed.build();
             event.replyEmbeds(msgEmbed)
                     .addActionRow(
-                            Button.primary(moderator+"togglerole", "togglerole"), // Button with only a label
+                            Button.primary(moderator+"autoresponses", "autoresponses"),
                             Button.primary(moderator+"fixpermissions", "fixperms"),
                             Button.primary(moderator+"resetpermissions", "resetperms")
+                    ).addActionRow(
+                            Button.primary(moderator+"deletemessages", "delmessages")
                     ).queue();
         }
+    }
+    public void slashManager(SlashCommandInteractionEvent event) {
 
+        String manager = event.getMember().getId();
+
+        EmbedBuilder embed = new EmbedBuilder();
+        embed.setColor(Color.CYAN);
+
+        embed.setAuthor(Objects.requireNonNull(event.getMember()).getEffectiveName());
+        embed.addField("roles", String.valueOf(event.getMember().getRoles()), false);
+        embed.setThumbnail(event.getMember().getEffectiveAvatarUrl());
+        MessageEmbed msgEmbed = embed.build();
+        event.replyEmbeds(msgEmbed)
+                .addActionRow(
+                        Button.primary(manager+"autoresponses", "autoresponses"),
+                        Button.primary(manager+"fixpermissions", "fixperms"),
+                        Button.primary(manager+"resetpermissions", "resetperms")
+                ).addActionRow(
+                        Button.primary(manager+"deletemessages", "delmessages")
+                ).queue();
+        
     }
     public void slashPing(SlashCommandInteractionEvent event) {
 

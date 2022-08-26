@@ -1,4 +1,4 @@
-package com.justinnelson.harmonymod.core.utility;
+package com.justinnelson.harmonymod.utility;
 
 import com.justinnelson.harmonymod.core.HarmonyMod;
 import com.justinnelson.harmonymod.data.HMCollections;
@@ -95,5 +95,11 @@ public class Util {
         embed.setDescription(str);
         embed.setColor(Color.CYAN);
         return embed.build();
+    }
+    public static void logExecution(String actor, String action){
+
+    }
+    public static void logExecution(String actor, String target, String action) {
+
     }
 }

@@ -1,7 +1,7 @@
 package com.justinnelson.harmonymod.interactions.commands;
 
 import com.justinnelson.harmonymod.core.HarmonyMod;
-import com.justinnelson.harmonymod.core.utility.Util;
+import com.justinnelson.harmonymod.utility.Util;
 import com.justinnelson.harmonymod.data.entities.ModLogEntity;
 import com.justinnelson.harmonymod.data.entities.helpers.TypeOfModeration;
 import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractCommand;

@@ -1,9 +1,7 @@
 package com.justinnelson.harmonymod.core;
 
-import com.justinnelson.harmonymod.core.utility.PingUpdates;
-import com.justinnelson.harmonymod.core.utility.Util;
+import com.justinnelson.harmonymod.utility.PingUpdates;
 import com.justinnelson.harmonymod.interactions.commands.commandprocessors.CommandProcessor;
-import com.justinnelson.harmonymod.interactions.commands.Commands;
 import com.justinnelson.harmonymod.data.AppConfig;
 import com.justinnelson.harmonymod.data.BotConfig;
 import com.justinnelson.harmonymod.data.db.DB;

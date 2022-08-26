@@ -1,25 +1,30 @@
-package com.justinnelson.harmonymod.interactions.events.selectionmenus;
+package com.justinnelson.harmonymod.interactions.events;
 
-import com.justinnelson.harmonymod.core.utility.Util;
-import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractSelectMenuHandler;
+import com.justinnelson.harmonymod.utility.Util;
+import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractEvent;
 
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Channel;
 import net.dv8tion.jda.api.entities.ChannelType;
-import net.dv8tion.jda.api.entities.Invite;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
-import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
-import net.dv8tion.jda.api.managers.Manager;
-import net.dv8tion.jda.api.managers.channel.ChannelManager;
 
 import java.util.Objects;
 
-public class SelectMenuFixPermissions extends AbstractSelectMenuHandler {
+public class SelectMenuEvents extends AbstractEvent {
 
-    @Override
     public void handle(SelectMenuInteractionEvent event) {
+        String name = event.getComponent().toString();
+
+        switch (name) {
+            case "placeholder": placeholder(event); break;
+            case "fixpermissions": fixPermissions(event); break;
+            case "resetpermissions": resetPermissions(event); break;
+
+        }
+    }
+    public void placeholder(SelectMenuInteractionEvent event) {
+
+    }
+    public void fixPermissions(SelectMenuInteractionEvent event) {
         if(event.getValues().contains("muted")) {
             (event.getGuild()).getChannels(false).forEach(channel -> {
                 if(channel.getType() == ChannelType.TEXT) {
@@ -62,6 +67,34 @@ public class SelectMenuFixPermissions extends AbstractSelectMenuHandler {
                                     .filter(role -> role.getName().equalsIgnoreCase("timeout")).findFirst()
                                     .orElse(null)))
                             .deny(Permission.VIEW_CHANNEL)
+                            .queue();
+                }
+            });
+            Util.standardSuccess(event);
+        }
+    }
+    public void resetPermissions(SelectMenuInteractionEvent event) {
+        if(event.getValues().contains("muted")) {
+            (event.getGuild()).getChannels(false).forEach(channel -> {
+                if(channel.getType() == ChannelType.TEXT) {
+                    channel.getPermissionContainer()
+                            .upsertPermissionOverride(((event.getGuild().getRoles().stream()
+                                    .filter(role -> role.getName().equalsIgnoreCase("muted")).findFirst()
+                                    .orElse(null))))
+                            .clear(Permission.MESSAGE_SEND)
+                            .clear(Permission.MESSAGE_SEND_IN_THREADS)
+                            .queue();
+                }
+            });
+            Util.standardSuccess(event);
+        } else if(event.getValues().contains("timeout")) {
+            event.getGuild().getChannels(false).forEach(channel -> {
+                if(channel.getType() == ChannelType.TEXT) {
+                    channel.getPermissionContainer()
+                            .upsertPermissionOverride(Objects.requireNonNull(event.getGuild().getRoles().stream()
+                                    .filter(role -> role.getName().equalsIgnoreCase("timeout")).findFirst()
+                                    .orElse(null)))
+                            .clear(Permission.VIEW_CHANNEL)
                             .queue();
                 }
             });
