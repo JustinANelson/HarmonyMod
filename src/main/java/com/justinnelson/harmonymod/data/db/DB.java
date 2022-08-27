@@ -93,15 +93,13 @@ public class DB {
             addGuildDataToDB(guildDataEntity);
         }
     }
-    public boolean checkJoinedGuildExists(Guild guild) {
-        boolean isFound = false;
+    public void checkJoinedGuildExists(Guild guild) {
         MongoCollection<Document> collection = dbDatabase.getCollection("guilds");
         long count = collection.countDocuments(new BsonDocument("guildID", new BsonString(guild.getId())));
         GuildDataEntity guildDataEntity = new GuildDataEntity(guild);
         guildDataEntity.setOnline(true);
         HMCollections.cachedGuilds.add(guildDataEntity);
         if (count > 0) {
-            isFound = true;
             info("Joined existing guild " + guild.getName() + ".");
         } else {
             info("Joined new guild. Creating entry for " + guild.getId() + "/" + guild.getName() + ".");
@@ -118,13 +116,12 @@ public class DB {
         int count = it.hasNext() ? (Integer)it.next().get("count") : 0;
         */
 
-        return isFound;
     }
     public void addGuildDataToDB(GuildDataEntity guildDataEntity){
         GuildDataDTO guildDataDTO = new GuildDataDTO();
-        guildDataDTO.guildID = guildDataEntity.getId();
-        guildDataDTO.guildName = guildDataEntity.getName();
-        guildDataDTO.guildOwnerID = guildDataEntity.getOwnerID();
+        guildDataDTO.id = guildDataEntity.getId();
+        guildDataDTO.name = guildDataEntity.getName();
+        guildDataDTO.ownerID = guildDataEntity.getOwnerID();
 
         String json = gsonGuildDataDTO.toJson(guildDataDTO);
         Document doc = Document.parse(json);
@@ -134,7 +131,7 @@ public class DB {
         catch (MongoServerException ex) {
             error(ex.getMessage());
         }
-        debug("Entry created for " + guildDataDTO.guildName + ".");
+        debug("Entry created for " + guildDataDTO.name + ".");
     }
     public void addUserDataTODB(UserDataEntity userDataEntity) {
         UserDataDTO userDataDTO = new UserDataDTO();

@@ -29,9 +29,10 @@ public class Commands {
                 .addOption(net.dv8tion.jda.api.interactions.commands.OptionType.ROLE, "rolebuttonrole", "Role to add", true)
                 .addOption(net.dv8tion.jda.api.interactions.commands.OptionType.STRING, "rolebuttondescription", "description", false)
                 .addOption(net.dv8tion.jda.api.interactions.commands.OptionType.BOOLEAN, "rolebuttontoggle", "is toggleable?", false));
+        HMCollections.slashCommands.add(net.dv8tion.jda.api.interactions.commands.build.Commands.slash("test", "test generic event processor"));
         HMCollections.slashCommands.add(net.dv8tion.jda.api.interactions.commands.build.Commands.slash("time", "Displays a time conversion table.")
                 .addOption(OptionType.BOOLEAN, "ephemeral", "Set false to make visible to everyone."));
-        HMCollections.slashCommands.add(net.dv8tion.jda.api.interactions.commands.build.Commands.slash("test", "test generic event processor"));
+
     }
     public static void createUserContextCommands() {
         HMCollections.userContextCommands.add(net.dv8tion.jda.api.interactions.commands.build.Commands.user("mute"));

@@ -6,7 +6,6 @@ import com.justinnelson.harmonymod.data.AppConfig;
 import com.justinnelson.harmonymod.data.BotConfig;
 import com.justinnelson.harmonymod.data.db.DB;
 import com.justinnelson.harmonymod.interactions.events.eventprocessors.EventProcessor;
-import com.justinnelson.harmonymod.interactions.events.Events;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -50,8 +49,6 @@ public class HarmonyMod {
 
         //Sync database and jda cache connected guilds
         db.checkOnlineGuildsExist(jda);
-
-        Events.register();
 
         //Uncomment only when new commands are added.
         //Util.registerTestGuildParameters();
