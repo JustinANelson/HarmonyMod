@@ -65,11 +65,13 @@ public class ButtonEvents extends AbstractEvent {
     public void buttonMute(ButtonInteractionEvent event, String id) {
         Guild guild = event.getGuild();
         Member member = guild.getMemberById(id);
-        boolean removeRolesOnMute = HarmonyMod.db.getBoolValue(guild.getId(), "removeRolesOnMute");
-        String guildMutedRole = HarmonyMod.db.getStringValue(guild.getId(), "mutedRole");
+        boolean keepRolesOnMute = HarmonyMod.db.getGuildBoolValue(guild.getId(), "keepRolesOnMute");
+        String guildMutedRole = HarmonyMod.db.getGuildStringValue(guild.getId(), "mutedRole");
         Role muteRole;
         String message = null;
 
+
+        //Find muted role
         if (guildMutedRole == null) {
             muteRole = guild.getRoles().stream()
                     .filter(r -> r.getName().equalsIgnoreCase("muted")).findFirst()
@@ -77,30 +79,41 @@ public class ButtonEvents extends AbstractEvent {
         } else {
             muteRole = guild.getRoleById(guildMutedRole);
         }
+
+
         /*
             Unmute already muted member.
          */
         if (member.getRoles().contains(muteRole)) {
             guild.removeRoleFromMember(member, muteRole).queue();
 
-            if (removeRolesOnMute) {
+            //if keepRolesOnMute is toggled off restore roles from DB.
+            if (!keepRolesOnMute) {
                 message = "{Roles restored}";
+                MutedMember mutedMember = HarmonyMod.db.getMutedMember(member);
+                for (int x = 0; x < mutedMember.removedRoles.size(); x++) {
+                    guild.addRoleToMember(member, guild.getRoleById(mutedMember.removedRoles.get(x))).queue();
+                }
             }
-            //TODO Add removed roles back to member.
+            //Remove muted member entry from this user in the DB
+            HarmonyMod.db.removeMutedMember(member);
 
+            //Log this interaction
             ModLogEntity  modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),
-                    TypeOfModeration.UNMUTE, "");
+                    TypeOfModeration.UNMUTE, message);
             HarmonyMod.db.addModLogEntry(modLogEntity);
-
         } else {
+
+
             /*
                 Mute member with optional remove existing roles
              */
             MutedMember mutedMember = new MutedMember();
             mutedMember.setGuildID(guild.getId());
-            mutedMember.setMemberID(member.getId());
             ArrayList<String> removedRoles = new ArrayList<>();
-            if (!removeRolesOnMute) {
+
+            //if keep roles is toggled off remove current roles and store in DB.
+            if (!keepRolesOnMute) {
                 List<Role> roles = member.getRoles();
                 for(Role r: roles){
                     member.getGuild().removeRoleFromMember(member, r).queue();
@@ -113,6 +126,9 @@ public class ButtonEvents extends AbstractEvent {
             //Add mute role to member.
             event.getGuild().addRoleToMember(member, muteRole).queue();
 
+            //TODO check if user already exists.
+            //TODO check if user is already muted on that server?
+            //Create new userEntity and add mute information including existing roles if any.
             UserEntity userEntity = new UserEntity();
             userEntity.setId(member.getId());
             userEntity.addMutedMember(mutedMember);

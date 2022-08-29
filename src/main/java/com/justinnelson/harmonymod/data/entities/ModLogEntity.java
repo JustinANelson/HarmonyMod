@@ -4,12 +4,8 @@ import com.justinnelson.harmonymod.data.entities.helpers.TypeOfModeration;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.User;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.UUID;
@@ -30,9 +26,9 @@ public class ModLogEntity {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss.SSSSSS Z");
         this.logTime = ZonedDateTime.now().format(formatter);
         this.moderationID = UUID.randomUUID();
-        this.guildID = guild.getId();
-        this.targetID = target.getId();
-        this.modID = mod.getId();
+        this.guildID = guild.getId() + "/" + guild.getName();
+        this.targetID = target.getId() + "/" + target.getEffectiveName() + target.getUser().getDiscriminator();
+        this.modID = mod.getId() + "/" + mod.getEffectiveName() + mod.getUser().getDiscriminator();
         this.typeOfModeration = type.name();
         if (Objects.isNull(message)) {
             this.moderationMessage = "No message submitted.";

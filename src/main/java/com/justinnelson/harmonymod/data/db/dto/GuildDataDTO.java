@@ -23,7 +23,7 @@ public class GuildDataDTO {
     public String mutedRole;
     public String timeoutChannel;
     public String timeoutRole;
-    public boolean removeRolesOnMute;
+    public boolean keepRolesOnMute;
 
     //Auto responder module
     public AutoResponse[] autoResponses;

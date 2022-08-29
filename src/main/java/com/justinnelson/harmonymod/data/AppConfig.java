@@ -25,11 +25,11 @@ public class AppConfig {
         Properties prop  = new Properties();
         InputStream is;
         try {
-            is = HarmonyMod.class.getClassLoader().getResourceAsStream("canary.properties");
+            is = HarmonyMod.class.getClassLoader().getResourceAsStream("config.properties");
             if (!Objects.isNull(is)) {
                 log.debug("Config file found.");
                 prop.load(is);
-            }else{
+            } else {
                 log.debug("Config file not found. Looking for env.");
                 prop.setProperty("TOKEN", System.getenv().get("TOKEN"));
                 prop.setProperty("DBURI", System.getenv("DBURI"));
@@ -44,7 +44,4 @@ public class AppConfig {
         }
         return prop;
     }
-
-
-
 }

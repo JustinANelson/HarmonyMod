@@ -20,10 +20,12 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.ISnowflake;
+import net.dv8tion.jda.api.entities.Member;
 
 import org.bson.BsonDocument;
 import org.bson.BsonString;
@@ -174,18 +176,46 @@ public class DB {
         debug("Mod Log Entry created: " + modLogEntity.toString()  + ".");
 
     }
-    public MutedMember getMutedMember(String guildID, String memberID) {
-        //TODO this method doesn't work
-        Document doc = dbDatabase.getCollection("users").find(eq("id", guildID)).first();
-        return new MutedMember();
+    public void removeMutedMember(Member member) {
+        String guildID = member.getGuild().getId();
+
+        Document doc = dbDatabase.getCollection("users").find(eq("id", member.getId())).first();
+
+        UserDTO userDTO = gson.fromJson(doc.toJson(), UserDTO.class);
+        userDTO.mutedMember.forEach(System.out::println);
+        MutedMember mutedMember = userDTO.mutedMember.stream()
+                .filter(guild -> guild.getGuildID().contains(guildID))
+                .findFirst()
+                .orElse(null);
+        userDTO.mutedMember.remove(mutedMember);
+
+        Document doc2 = Document.parse(gson.toJson(userDTO));
+        try {
+            dbDatabase.getCollection("users").replaceOne(Filters.eq("id", member.getId()), doc2);
+        }
+        catch (MongoServerException ex) {
+            error(ex.getMessage());
+        }
     }
-    public String getStringValue(String guildID, String field) {
+    public MutedMember getMutedMember(Member member) {
+        String guildID = member.getGuild().getId();
+
+        Document doc = dbDatabase.getCollection("users").find(eq("id", member.getId())).first();
+        String json = doc.toJson();
+
+        UserDTO userDTO = gson.fromJson(json, UserDTO.class);
+        MutedMember mutedMember = userDTO.mutedMember.stream()
+                        .filter(guild -> guild.getGuildID().contains(guildID)).findFirst().orElse(null);
+
+        return mutedMember;
+    }
+    public String getGuildStringValue(String guildID, String field) {
 
         Document doc = dbDatabase.getCollection("guilds").find(eq("id", guildID)).first();
 
         return doc.getString(field);
     }
-    public boolean getBoolValue(String guildID, String field) {
+    public boolean getGuildBoolValue(String guildID, String field) {
 
         Document doc = dbDatabase.getCollection("guilds").find(eq("id", guildID)).first();
 

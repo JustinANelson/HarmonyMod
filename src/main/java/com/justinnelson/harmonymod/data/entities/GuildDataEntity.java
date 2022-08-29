@@ -26,7 +26,7 @@ public class GuildDataEntity {
     private String mutedRole;
     private String timeoutChannel;
     private String timeoutRole;
-    private boolean removeRolesOnMute;
+    private boolean keepRolesOnMute;
 
     //Auto responder module
     private AutoResponse[] autoResponses;
@@ -61,7 +61,7 @@ public class GuildDataEntity {
     public void setMutedRole(String mutedRole) {this.mutedRole = mutedRole;}
     public void setTimeoutChannel(String timeoutChannel) {this.timeoutChannel = timeoutChannel;}
     public void setTimeoutRole(String timeoutRole) {this.timeoutRole = timeoutRole;}
-    public void setRemoveRolesOnMute(boolean removeRolesOnMute) {this.removeRolesOnMute = removeRolesOnMute;}
+    public void setKeepRolesOnMute(boolean keepRolesOnMute) {this.keepRolesOnMute = keepRolesOnMute;}
     public void setAutoResponses(AutoResponse[] autoResponses) {this.autoResponses = autoResponses;}
     public void setModeratorRoles(String[] moderatorRoles) {this.moderatorRoles = moderatorRoles;}
     public void setLogModerationChannel(String logModerationChannel) {this.logModerationChannel = logModerationChannel;}
@@ -82,7 +82,7 @@ public class GuildDataEntity {
     public String getMutedRole() {return mutedRole;}
     public String getTimeoutChannel() {return timeoutChannel;}
     public String getTimeoutRole() {return timeoutRole;}
-    public boolean getRemoveRolesOnMute() {return removeRolesOnMute;}
+    public boolean getKeepRolesOnMute() {return keepRolesOnMute;}
     public AutoResponse[] getAutoResponses() {return autoResponses;}
     public String[] getModeratorRoles() {return moderatorRoles;}
     public String getLogModerationChannel() {return logModerationChannel;}
@@ -106,7 +106,7 @@ public class GuildDataEntity {
                 ", mutedRole='" + mutedRole + '\'' +
                 ", timeoutChannel='" + timeoutChannel + '\'' +
                 ", timeoutRole='" + timeoutRole + '\'' +
-                ", removeRolesOnMute=" + removeRolesOnMute +
+                ", keepRolesOnMute=" + keepRolesOnMute +
                 ", autoResponses=" + Arrays.toString(autoResponses) +
                 ", moderatorRoles=" + Arrays.toString(moderatorRoles) +
                 ", logModerationChannel='" + logModerationChannel + '\'' +
