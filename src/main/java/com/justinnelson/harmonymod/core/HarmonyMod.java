@@ -31,6 +31,7 @@ public class HarmonyMod {
     public static EventProcessor eventProcessor;
 
     public static void main(String[] args) throws Exception {
+        info("Starting JDA");
         jda = JDABuilder.create(AppConfig.TOKEN, EnumSet.allOf(GatewayIntent.class))
                 .disableCache(CacheFlag.ACTIVITY)
                 .disableIntents(GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGE_TYPING)
@@ -43,8 +44,8 @@ public class HarmonyMod {
         start();
     }
     public static void start() {
-        System.out.println("BOT NAME: " + jda.getSelfUser().getName());
-        System.out.println("BOT ID: " + jda.getSelfUser().getId());
+        info("BOT NAME: " + jda.getSelfUser().getName());
+        info("BOT ID: " + jda.getSelfUser().getId());
         db = new DB();
         botConfig = new BotConfig();
         commandProcessor = new CommandProcessor();

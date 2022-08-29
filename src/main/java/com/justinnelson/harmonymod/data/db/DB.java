@@ -78,7 +78,7 @@ public class DB {
         //Add all guildIDs stored in the DB to a collection.
         List<String> dbGuildIDs = new ArrayList<>();
         for (Document document : collection.find()) {
-            dbGuildIDs.add(document.getString("guildID"));
+            dbGuildIDs.add(document.getString("id"));
         }
 
         //Remove all guilds that already have a DB entry.
