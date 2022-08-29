@@ -1,15 +1,18 @@
 package com.justinnelson.harmonymod.data.db;
 
+import static com.mongodb.client.model.Filters.eq;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.justinnelson.harmonymod.data.AppConfig;
 import com.justinnelson.harmonymod.data.HMCollections;
 import com.justinnelson.harmonymod.data.db.dto.GuildDataDTO;
 import com.justinnelson.harmonymod.data.db.dto.ModLogDTO;
-import com.justinnelson.harmonymod.data.db.dto.UserDataDTO;
+import com.justinnelson.harmonymod.data.db.dto.UserDTO;
 import com.justinnelson.harmonymod.data.entities.GuildDataEntity;
 import com.justinnelson.harmonymod.data.entities.ModLogEntity;
-import com.justinnelson.harmonymod.data.entities.UserDataEntity;
+import com.justinnelson.harmonymod.data.entities.UserEntity;
+import com.justinnelson.harmonymod.data.entities.helpers.MutedMember;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoServerException;
@@ -44,10 +47,9 @@ public class DB {
     public MongoClient dbClient;
     public MongoDatabase dbDatabase;
     public String botDataCollection = "botData";
+    public Mappers mapper = new Mappers();
 
-    private static Gson gsonGuildDataDTO = new GsonBuilder().serializeNulls().create();
-    private static Gson gsonUserDataDTO = new GsonBuilder().serializeNulls().create();
-    private static Gson gsonNewModLogDTO = new GsonBuilder().serializeNulls().create();
+    private static Gson gson = new GsonBuilder().serializeNulls().create();
 
     public DB() {
         dbClient = connect();
@@ -90,7 +92,7 @@ public class DB {
                     new GuildDataEntity(guild);
             guildDataEntity.setOnline(true);
             HMCollections.cachedGuilds.add(guildDataEntity);
-            addGuildDataToDB(guildDataEntity);
+            addGuildData(guildDataEntity);
         }
     }
     public void checkJoinedGuildExists(Guild guild) {
@@ -104,7 +106,7 @@ public class DB {
         } else {
             info("Joined new guild. Creating entry for " + guild.getId() + "/" + guild.getName() + ".");
             //Adds new entry to the DB.
-            addGuildDataToDB(guildDataEntity);
+            addGuildData(guildDataEntity);
         }
 
         /* For use if DB is in sharded cluster
@@ -117,13 +119,13 @@ public class DB {
         */
 
     }
-    public void addGuildDataToDB(GuildDataEntity guildDataEntity){
+    public void addGuildData(GuildDataEntity guildDataEntity){
         GuildDataDTO guildDataDTO = new GuildDataDTO();
         guildDataDTO.id = guildDataEntity.getId();
         guildDataDTO.name = guildDataEntity.getName();
         guildDataDTO.ownerID = guildDataEntity.getOwnerID();
 
-        String json = gsonGuildDataDTO.toJson(guildDataDTO);
+        String json = gson.toJson(guildDataDTO);
         Document doc = Document.parse(json);
         try {
             dbDatabase.getCollection("guilds").insertOne(doc);
@@ -133,12 +135,24 @@ public class DB {
         }
         debug("Entry created for " + guildDataDTO.name + ".");
     }
-    public void addUserDataTODB(UserDataEntity userDataEntity) {
-        UserDataDTO userDataDTO = new UserDataDTO();
-        userDataDTO.id = userDataEntity.getId();
-        userDataDTO.nicknames = userDataEntity.getNicknames();
+    public void addUser(UserEntity userEntity) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.id = userEntity.getId();
+        userDTO.timezone = userEntity.getTimezone();
+        userDTO.nicknames = userEntity.getNicknames();
+        userDTO.usernames = userEntity.getUsernames();
+        userDTO.mutedMember = userEntity.getMutedMemberEntities();
+
+        String json = gson.toJson(userDTO);
+        Document doc = Document.parse(json);
+        try {
+            dbDatabase.getCollection("users").insertOne(doc);
+        }
+        catch (MongoServerException ex) {
+            error(ex.getMessage());
+        }
     }
-    public void newModLogEntry(ModLogEntity modLogEntity) {
+    public void addModLogEntry(ModLogEntity modLogEntity) {
 
         ModLogDTO modLogDTO = new ModLogDTO();
         modLogDTO.logTime = modLogEntity.getLogTime();
@@ -149,7 +163,7 @@ public class DB {
         modLogDTO.typeOfModeration = modLogEntity.getTypeOfModeration();
         modLogDTO.moderationMessage = modLogEntity.getModerationMessage();
 
-        String json = gsonNewModLogDTO.toJson(modLogDTO);
+        String json = gson.toJson(modLogDTO);
         Document doc = Document.parse(json);
         try {
             dbDatabase.getCollection("modlogs").insertOne(doc);
@@ -159,6 +173,22 @@ public class DB {
         }
         debug("Mod Log Entry created: " + modLogEntity.toString()  + ".");
 
+    }
+    public MutedMember getMutedMember(String guildID, String memberID) {
+        //TODO this method doesn't work
+        Document doc = dbDatabase.getCollection("users").find(eq("id", guildID)).first();
+        return new MutedMember();
+    }
+    public String getStringValue(String guildID, String field) {
 
+        Document doc = dbDatabase.getCollection("guilds").find(eq("id", guildID)).first();
+
+        return doc.getString(field);
+    }
+    public boolean getBoolValue(String guildID, String field) {
+
+        Document doc = dbDatabase.getCollection("guilds").find(eq("id", guildID)).first();
+
+        return doc.getBoolean(field);
     }
 }

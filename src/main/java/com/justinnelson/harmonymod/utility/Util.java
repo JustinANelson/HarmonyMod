@@ -1,8 +1,8 @@
 package com.justinnelson.harmonymod.utility;
 
 import com.justinnelson.harmonymod.core.HarmonyMod;
-import com.justinnelson.harmonymod.data.HMCollections;
 import com.justinnelson.harmonymod.data.AppConfig;
+import com.justinnelson.harmonymod.data.HMCollections;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -31,8 +31,10 @@ public class Util {
         //HarmonyMod support server ID
         Guild guild = HarmonyMod.jda.getGuildById(AppConfig.SUPPORTSERVER);
 
+        //HMCollections.guildCommands.stream().map(e -> e.getName()).collect(Collectors.toList()).forEach(System.out::println);
+
         if (guild != null) {
-            guild.updateCommands().addCommands(HMCollections.guildCommands).queue();
+            guild.updateCommands().addCommands(HMCollections.guildCommands).complete();
         }
     }
     public static void registerGlobalCommands(){

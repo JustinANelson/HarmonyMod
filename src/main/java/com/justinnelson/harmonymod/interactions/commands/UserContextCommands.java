@@ -1,10 +1,10 @@
 package com.justinnelson.harmonymod.interactions.commands;
 
 import com.justinnelson.harmonymod.core.HarmonyMod;
-import com.justinnelson.harmonymod.utility.Util;
 import com.justinnelson.harmonymod.data.entities.ModLogEntity;
 import com.justinnelson.harmonymod.data.entities.helpers.TypeOfModeration;
 import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractCommand;
+import com.justinnelson.harmonymod.utility.Util;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -30,22 +30,20 @@ public class UserContextCommands extends AbstractCommand {
         if (member.getRoles().contains(role))
         {
 
-            //TODO - add all removed roles from member
             event.getGuild().removeRoleFromMember(member, role).queue();
 
             ModLogEntity modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),
                     TypeOfModeration.MUTE, "Actin' a fool.");
-            HarmonyMod.db.newModLogEntry(modLogEntity);
+            HarmonyMod.db.addModLogEntry(modLogEntity);
 
         } else {
 
-            //TODO - remove all existing rules from member
+            //TODO - remove all existing rules from member - copy from button
             event.getGuild().addRoleToMember(member, role).queue();
 
             ModLogEntity  modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),
                     TypeOfModeration.UNMUTE, "Back in compliance.");
-            HarmonyMod.db.newModLogEntry(modLogEntity);
-
+            HarmonyMod.db.addModLogEntry(modLogEntity);
         }
 
         Util.standardSuccess(event);

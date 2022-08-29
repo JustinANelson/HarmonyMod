@@ -1,11 +1,12 @@
 package com.justinnelson.harmonymod.core;
 
-import com.justinnelson.harmonymod.utility.PingUpdates;
-import com.justinnelson.harmonymod.interactions.commands.commandprocessors.CommandProcessor;
 import com.justinnelson.harmonymod.data.AppConfig;
 import com.justinnelson.harmonymod.data.BotConfig;
 import com.justinnelson.harmonymod.data.db.DB;
+import com.justinnelson.harmonymod.interactions.commands.commandprocessors.CommandProcessor;
 import com.justinnelson.harmonymod.interactions.events.eventprocessors.EventProcessor;
+import com.justinnelson.harmonymod.utility.PingUpdates;
+import com.justinnelson.harmonymod.utility.Util;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -35,13 +36,15 @@ public class HarmonyMod {
                 .disableIntents(GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.DIRECT_MESSAGE_TYPING)
                 .setLargeThreshold(100)
                 .useSharding(0, 1)
-                .addEventListeners(new Listeners()).build();
+                .addEventListeners(new MyListenerAdapter()).build();
         jda.getPresence().setStatus(OnlineStatus.ONLINE);
         jda.getPresence().setActivity(Activity.playing("Loading..."));
         jda.awaitReady();
         start();
     }
     public static void start() {
+        System.out.println("BOT NAME: " + jda.getSelfUser().getName());
+        System.out.println("BOT ID: " + jda.getSelfUser().getId());
         db = new DB();
         botConfig = new BotConfig();
         commandProcessor = new CommandProcessor();
@@ -51,8 +54,8 @@ public class HarmonyMod {
         db.checkOnlineGuildsExist(jda);
 
         //Uncomment only when new commands are added.
-        //Util.registerTestGuildParameters();
-        //Util.registerGlobalCommands();
+        Util.registerTestGuildParameters();
+        Util.registerGlobalCommands();
 
         jda.getPresence().setActivity(Activity.playing("Harmonizing"));
         if (log.isTraceEnabled()) {

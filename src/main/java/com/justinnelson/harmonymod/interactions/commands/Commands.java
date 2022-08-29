@@ -4,8 +4,6 @@ import com.justinnelson.harmonymod.data.HMCollections;
 
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 
-import java.util.ArrayList;
-
 public class Commands {
 
     public static void create() {

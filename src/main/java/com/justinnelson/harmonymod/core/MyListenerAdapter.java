@@ -3,23 +3,18 @@ package com.justinnelson.harmonymod.core;
 import static com.justinnelson.harmonymod.core.HarmonyMod.jda;
 
 import com.justinnelson.harmonymod.interactions.commands.customcommands.MessageReceivedInteractionEvent;
-import com.justinnelson.harmonymod.interactions.events.eventprocessors.EventProcessor;
 
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.DisconnectEvent;
 import net.dv8tion.jda.api.events.ExceptionEvent;
 import net.dv8tion.jda.api.events.GatewayPingEvent;
-import net.dv8tion.jda.api.events.GenericEvent;
-import net.dv8tion.jda.api.events.RawGatewayEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ReconnectedEvent;
 import net.dv8tion.jda.api.events.ResumedEvent;
 import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.events.StatusChangeEvent;
-import net.dv8tion.jda.api.events.UpdateEvent;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
-import net.dv8tion.jda.api.events.channel.GenericChannelEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateArchiveTimestampEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateArchivedEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateAutoArchiveDurationEvent;
@@ -35,14 +30,10 @@ import net.dv8tion.jda.api.events.channel.update.ChannelUpdateSlowmodeEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateTopicEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateTypeEvent;
 import net.dv8tion.jda.api.events.channel.update.ChannelUpdateUserLimitEvent;
-import net.dv8tion.jda.api.events.channel.update.GenericChannelUpdateEvent;
 import net.dv8tion.jda.api.events.emoji.EmojiAddedEvent;
 import net.dv8tion.jda.api.events.emoji.EmojiRemovedEvent;
-import net.dv8tion.jda.api.events.emoji.GenericEmojiEvent;
 import net.dv8tion.jda.api.events.emoji.update.EmojiUpdateNameEvent;
 import net.dv8tion.jda.api.events.emoji.update.EmojiUpdateRolesEvent;
-import net.dv8tion.jda.api.events.emoji.update.GenericEmojiUpdateEvent;
-import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.guild.GuildAvailableEvent;
 import net.dv8tion.jda.api.events.guild.GuildBanEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
@@ -53,26 +44,21 @@ import net.dv8tion.jda.api.events.guild.GuildUnavailableEvent;
 import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
 import net.dv8tion.jda.api.events.guild.UnavailableGuildJoinedEvent;
 import net.dv8tion.jda.api.events.guild.UnavailableGuildLeaveEvent;
-import net.dv8tion.jda.api.events.guild.invite.GenericGuildInviteEvent;
 import net.dv8tion.jda.api.events.guild.invite.GuildInviteCreateEvent;
 import net.dv8tion.jda.api.events.guild.invite.GuildInviteDeleteEvent;
-import net.dv8tion.jda.api.events.guild.member.GenericGuildMemberEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberUpdateEvent;
-import net.dv8tion.jda.api.events.guild.member.update.GenericGuildMemberUpdateEvent;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateAvatarEvent;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateBoostTimeEvent;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdatePendingEvent;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateTimeOutEvent;
-import net.dv8tion.jda.api.events.guild.override.GenericPermissionOverrideEvent;
 import net.dv8tion.jda.api.events.guild.override.PermissionOverrideCreateEvent;
 import net.dv8tion.jda.api.events.guild.override.PermissionOverrideDeleteEvent;
 import net.dv8tion.jda.api.events.guild.override.PermissionOverrideUpdateEvent;
-import net.dv8tion.jda.api.events.guild.update.GenericGuildUpdateEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateAfkChannelEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateAfkTimeoutEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateBannerEvent;
@@ -96,7 +82,6 @@ import net.dv8tion.jda.api.events.guild.update.GuildUpdateSplashEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateSystemChannelEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateVanityCodeEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateVerificationLevelEvent;
-import net.dv8tion.jda.api.events.guild.voice.GenericGuildVoiceEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceDeafenEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceGuildDeafenEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceGuildMuteEvent;
@@ -112,36 +97,27 @@ import net.dv8tion.jda.api.events.guild.voice.GuildVoiceSuppressEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceUpdateEvent;
 import net.dv8tion.jda.api.events.guild.voice.GuildVoiceVideoEvent;
 import net.dv8tion.jda.api.events.http.HttpRequestEvent;
-import net.dv8tion.jda.api.events.interaction.GenericAutoCompleteInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.GenericInteractionCreateEvent;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.ApplicationCommandUpdatePrivilegesEvent;
 import net.dv8tion.jda.api.events.interaction.command.ApplicationUpdatePrivilegesEvent;
 import net.dv8tion.jda.api.events.interaction.command.CommandAutoCompleteInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.command.GenericCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.command.GenericContextInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.GenericPrivilegeUpdateEvent;
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.GenericComponentInteractionCreateEvent;
 import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
-import net.dv8tion.jda.api.events.message.GenericMessageEvent;
 import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.events.message.MessageEmbedEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
-import net.dv8tion.jda.api.events.message.react.GenericMessageReactionEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveAllEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEmojiEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionRemoveEvent;
-import net.dv8tion.jda.api.events.role.GenericRoleEvent;
 import net.dv8tion.jda.api.events.role.RoleCreateEvent;
 import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
-import net.dv8tion.jda.api.events.role.update.GenericRoleUpdateEvent;
 import net.dv8tion.jda.api.events.role.update.RoleUpdateColorEvent;
 import net.dv8tion.jda.api.events.role.update.RoleUpdateHoistedEvent;
 import net.dv8tion.jda.api.events.role.update.RoleUpdateIconEvent;
@@ -149,36 +125,27 @@ import net.dv8tion.jda.api.events.role.update.RoleUpdateMentionableEvent;
 import net.dv8tion.jda.api.events.role.update.RoleUpdateNameEvent;
 import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
 import net.dv8tion.jda.api.events.role.update.RoleUpdatePositionEvent;
-import net.dv8tion.jda.api.events.self.GenericSelfUpdateEvent;
 import net.dv8tion.jda.api.events.self.SelfUpdateAvatarEvent;
 import net.dv8tion.jda.api.events.self.SelfUpdateMFAEvent;
 import net.dv8tion.jda.api.events.self.SelfUpdateNameEvent;
 import net.dv8tion.jda.api.events.self.SelfUpdateVerifiedEvent;
-import net.dv8tion.jda.api.events.stage.GenericStageInstanceEvent;
 import net.dv8tion.jda.api.events.stage.StageInstanceCreateEvent;
 import net.dv8tion.jda.api.events.stage.StageInstanceDeleteEvent;
-import net.dv8tion.jda.api.events.stage.update.GenericStageInstanceUpdateEvent;
 import net.dv8tion.jda.api.events.stage.update.StageInstanceUpdatePrivacyLevelEvent;
 import net.dv8tion.jda.api.events.stage.update.StageInstanceUpdateTopicEvent;
-import net.dv8tion.jda.api.events.sticker.GenericGuildStickerEvent;
 import net.dv8tion.jda.api.events.sticker.GuildStickerAddedEvent;
 import net.dv8tion.jda.api.events.sticker.GuildStickerRemovedEvent;
-import net.dv8tion.jda.api.events.sticker.update.GenericGuildStickerUpdateEvent;
 import net.dv8tion.jda.api.events.sticker.update.GuildStickerUpdateAvailableEvent;
 import net.dv8tion.jda.api.events.sticker.update.GuildStickerUpdateDescriptionEvent;
 import net.dv8tion.jda.api.events.sticker.update.GuildStickerUpdateNameEvent;
 import net.dv8tion.jda.api.events.sticker.update.GuildStickerUpdateTagsEvent;
-import net.dv8tion.jda.api.events.thread.GenericThreadEvent;
 import net.dv8tion.jda.api.events.thread.ThreadHiddenEvent;
 import net.dv8tion.jda.api.events.thread.ThreadRevealedEvent;
-import net.dv8tion.jda.api.events.thread.member.GenericThreadMemberEvent;
 import net.dv8tion.jda.api.events.thread.member.ThreadMemberJoinEvent;
 import net.dv8tion.jda.api.events.thread.member.ThreadMemberLeaveEvent;
-import net.dv8tion.jda.api.events.user.GenericUserEvent;
 import net.dv8tion.jda.api.events.user.UserActivityEndEvent;
 import net.dv8tion.jda.api.events.user.UserActivityStartEvent;
 import net.dv8tion.jda.api.events.user.UserTypingEvent;
-import net.dv8tion.jda.api.events.user.update.GenericUserPresenceEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateActivitiesEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateActivityOrderEvent;
 import net.dv8tion.jda.api.events.user.update.UserUpdateAvatarEvent;
@@ -193,8 +160,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 
-public class Listeners extends ListenerAdapter {
-    public Listeners() {
+public class MyListenerAdapter extends ListenerAdapter {
+    public MyListenerAdapter() {
         super();
     }
 
@@ -210,18 +177,6 @@ public class Listeners extends ListenerAdapter {
         super.onSlashCommandInteraction(event);
         debug(event.getName());
         HarmonyMod.commandProcessor.process(event);
-    }
-    @Override
-    public void onGenericEvent(@Nonnull GenericEvent event) {
-        super.onGenericEvent(event);
-    }
-    @Override
-    public void onGenericUpdate(@Nonnull UpdateEvent<?, ?> event) {
-        super.onGenericUpdate(event);
-    }
-    @Override
-    public void onRawGateway(@Nonnull RawGatewayEvent event) {
-        super.onRawGateway(event);
     }
     @Override
     public void onGatewayPing(@Nonnull GatewayPingEvent event) {
@@ -827,121 +782,5 @@ public class Listeners extends ListenerAdapter {
     @Override
     public void onHttpRequest(@Nonnull HttpRequestEvent event) {
         super.onHttpRequest(event);
-    }
-    @Override
-    public void onGenericInteractionCreate(@Nonnull GenericInteractionCreateEvent event) {
-        super.onGenericInteractionCreate(event);
-    }
-    @Override
-    public void onGenericAutoCompleteInteraction(@Nonnull GenericAutoCompleteInteractionEvent event) {
-        super.onGenericAutoCompleteInteraction(event);
-    }
-    @Override
-    public void onGenericComponentInteractionCreate(@Nonnull GenericComponentInteractionCreateEvent event) {
-        super.onGenericComponentInteractionCreate(event);
-    }
-    @Override
-    public void onGenericCommandInteraction(@Nonnull GenericCommandInteractionEvent event) {
-        super.onGenericCommandInteraction(event);
-    }
-    @Override
-    public void onGenericContextInteraction(@Nonnull GenericContextInteractionEvent<?> event) {
-        super.onGenericContextInteraction(event);
-    }
-    @Override
-    public void onGenericMessage(@Nonnull GenericMessageEvent event) {
-        super.onGenericMessage(event);
-    }
-    @Override
-    public void onGenericMessageReaction(@Nonnull GenericMessageReactionEvent event) {
-        super.onGenericMessageReaction(event);
-    }
-    @Override
-    public void onGenericUser(@Nonnull GenericUserEvent event) {
-        super.onGenericUser(event);
-    }
-    @Override
-    public void onGenericUserPresence(@Nonnull GenericUserPresenceEvent event) {
-        super.onGenericUserPresence(event);
-    }
-    @Override
-    public void onGenericSelfUpdate(@Nonnull GenericSelfUpdateEvent event) {
-        super.onGenericSelfUpdate(event);
-    }
-    @Override
-    public void onGenericStageInstance(@Nonnull GenericStageInstanceEvent event) {
-        super.onGenericStageInstance(event);
-    }
-    @Override
-    public void onGenericStageInstanceUpdate(@Nonnull GenericStageInstanceUpdateEvent event) {
-        super.onGenericStageInstanceUpdate(event);
-    }
-    @Override
-    public void onGenericChannel(@Nonnull GenericChannelEvent event) {
-        super.onGenericChannel(event);
-    }
-    @Override
-    public void onGenericChannelUpdate(@Nonnull GenericChannelUpdateEvent<?> event) {
-        super.onGenericChannelUpdate(event);
-    }
-    @Override
-    public void onGenericThread(@Nonnull GenericThreadEvent event) {
-        super.onGenericThread(event);
-    }
-    @Override
-    public void onGenericThreadMember(@Nonnull GenericThreadMemberEvent event) {
-        super.onGenericThreadMember(event);
-    }
-    @Override
-    public void onGenericGuild(@Nonnull GenericGuildEvent event) {
-        super.onGenericGuild(event);
-    }
-    @Override
-    public void onGenericGuildUpdate(@Nonnull GenericGuildUpdateEvent event) {
-        super.onGenericGuildUpdate(event);
-    }
-    @Override
-    public void onGenericGuildInvite(@Nonnull GenericGuildInviteEvent event) {
-        super.onGenericGuildInvite(event);
-    }
-    @Override
-    public void onGenericGuildMember(@Nonnull GenericGuildMemberEvent event) {
-        super.onGenericGuildMember(event);
-    }
-    @Override
-    public void onGenericGuildMemberUpdate(@Nonnull GenericGuildMemberUpdateEvent event) {
-        super.onGenericGuildMemberUpdate(event);
-    }
-    @Override
-    public void onGenericGuildVoice(@Nonnull GenericGuildVoiceEvent event) {
-        super.onGenericGuildVoice(event);
-    }
-    @Override
-    public void onGenericRole(@Nonnull GenericRoleEvent event) {
-        super.onGenericRole(event);
-    }
-    @Override
-    public void onGenericRoleUpdate(@Nonnull GenericRoleUpdateEvent event) {
-        super.onGenericRoleUpdate(event);
-    }
-    @Override
-    public void onGenericEmoji(@Nonnull GenericEmojiEvent event) {
-        super.onGenericEmoji(event);
-    }
-    @Override
-    public void onGenericEmojiUpdate(@Nonnull GenericEmojiUpdateEvent event) {
-        super.onGenericEmojiUpdate(event);
-    }
-    @Override
-    public void onGenericGuildSticker(@Nonnull GenericGuildStickerEvent event) {
-        super.onGenericGuildSticker(event);
-    }
-    @Override
-    public void onGenericGuildStickerUpdate(@Nonnull GenericGuildStickerUpdateEvent event) {
-        super.onGenericGuildStickerUpdate(event);
-    }
-    @Override
-    public void onGenericPermissionOverride(@Nonnull GenericPermissionOverrideEvent event) {
-        super.onGenericPermissionOverride(event);
     }
 }

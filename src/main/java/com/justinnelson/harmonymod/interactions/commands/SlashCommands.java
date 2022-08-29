@@ -1,8 +1,8 @@
 package com.justinnelson.harmonymod.interactions.commands;
 
 import com.justinnelson.harmonymod.core.HarmonyMod;
-import com.justinnelson.harmonymod.utility.Util;
 import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractCommand;
+import com.justinnelson.harmonymod.utility.Util;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -114,16 +114,16 @@ public class SlashCommands extends AbstractCommand {
             MessageEmbed msgEmbed = embed.build();
             event.replyEmbeds(msgEmbed)
                     .addActionRow(
-                            Button.primary( target+"panelmute", "(un)mute"), // Button with only a label
-                            Button.primary(target+"paneltimeout", "timeout"), // Button with only a label
-                            Button.primary(target+"panelnickname", "nickname") // Button with only a label
+                            Button.primary( target+"mute", "(un)mute"), // Button with only a label
+                            Button.primary(target+"timeout", "timeout"), // Button with only a label
+                            Button.primary(target+"nickname", "nickname") // Button with only a label
                     ).addActionRow(
-                            Button.primary(target+"panellookup", "lookup"), // Button with only a label
-                            Button.primary(target+"panelban", "ban")// Button with only a label
+                            Button.primary(target+"lookup", "lookup"), // Button with only a label
+                            Button.primary(target+"ban", "ban")// Button with only a label
                     ).addActionRow(
-                            Button.primary(target+"panelkick", "kick"), // Button with only a label
-                            Button.primary(target+"panelwarn", "warn"), // Button with only a label
-                            Button.primary(target+"panelmoderations", "moderations")// Button with only a label
+                            Button.primary(target+"kick", "kick"), // Button with only a label
+                            Button.primary(target+"warn", "warn"), // Button with only a label
+                            Button.primary(target+"moderations", "moderations")// Button with only a label
                     ).queue();
         } else {
             String moderator = event.getMember().getId();

@@ -23,9 +23,10 @@ public class GuildDataDTO {
     public String mutedRole;
     public String timeoutChannel;
     public String timeoutRole;
+    public boolean removeRolesOnMute;
 
     //Auto responder module
-    private AutoResponse[] autoResponses;
+    public AutoResponse[] autoResponses;
 
     //Moderation module
     public String[] moderatorRoles;

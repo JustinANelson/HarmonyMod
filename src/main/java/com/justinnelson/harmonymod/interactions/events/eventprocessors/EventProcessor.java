@@ -1,7 +1,6 @@
 package com.justinnelson.harmonymod.interactions.events.eventprocessors;
 
 import com.justinnelson.harmonymod.data.Metrics;
-import com.justinnelson.harmonymod.interactions.commands.Commands;
 import com.justinnelson.harmonymod.interactions.events.AutoResponderEvents;
 import com.justinnelson.harmonymod.interactions.events.ButtonEvents;
 import com.justinnelson.harmonymod.interactions.events.ModalEvents;
@@ -31,7 +30,6 @@ public class EventProcessor {
     SelectMenuEvents selectMenuEvents;
 
     public EventProcessor() {
-        Commands.create();
         autoResponderEvents = new AutoResponderEvents();
         buttonEvents = new ButtonEvents();
         modalEvents = new ModalEvents();
