@@ -1,11 +1,11 @@
-package com.justinnelson.harmonymod.interactions.events;
+package com.justinnelson.harmonymod.modules.interactions.events;
 
-import com.justinnelson.harmonymod.core.HarmonyMod;
+import com.justinnelson.harmonymod.HarmonyMod;
 import com.justinnelson.harmonymod.data.entities.ModLogEntity;
 import com.justinnelson.harmonymod.data.entities.UserEntity;
 import com.justinnelson.harmonymod.data.entities.helpers.MutedMember;
 import com.justinnelson.harmonymod.data.entities.helpers.TypeOfModeration;
-import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractEvent;
+import com.justinnelson.harmonymod.modules.interactions.events.eventprocessors.AbstractEvent;
 import com.justinnelson.harmonymod.utility.Util;
 
 import net.dv8tion.jda.api.Permission;
@@ -126,15 +126,19 @@ public class ButtonEvents extends AbstractEvent {
             //Add mute role to member.
             event.getGuild().addRoleToMember(member, muteRole).queue();
 
-            //TODO check if user already exists.
-            //TODO check if user is already muted on that server?
-            //Create new userEntity and add mute information including existing roles if any.
-            UserEntity userEntity = new UserEntity();
-            userEntity.setId(member.getId());
-            userEntity.addMutedMember(mutedMember);
+            boolean userExists = HarmonyMod.db.checkUserExists(member);
+            if (userExists) {
+                //If user already exists in DB just add a mutedMember object.
+                HarmonyMod.db.addMutedMember(mutedMember, id);
+            } else {
+                //Create new userEntity and add mute information including existing roles if any.
+                UserEntity userEntity = new UserEntity();
+                userEntity.setId(member.getId());
+                userEntity.addMutedMember(mutedMember);
 
-            //Store user in DB
-            HarmonyMod.db.addUser(userEntity);
+                //Store user in DB
+                HarmonyMod.db.addUser(userEntity);
+            }
 
             //Create a new mod log entry.
             ModLogEntity modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),

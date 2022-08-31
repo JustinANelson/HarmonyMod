@@ -1,7 +1,7 @@
 package com.justinnelson.harmonymod.data;
 
 import com.justinnelson.harmonymod.data.entities.GuildDataEntity;
-import com.justinnelson.harmonymod.interactions.events.customevents.ModerationInteractionEvent;
+import com.justinnelson.harmonymod.modules.interactions.events.customevents.ModerationInteractionEvent;
 
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;

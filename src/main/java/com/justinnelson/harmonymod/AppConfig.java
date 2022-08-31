@@ -1,6 +1,4 @@
-package com.justinnelson.harmonymod.data;
-
-import com.justinnelson.harmonymod.core.HarmonyMod;
+package com.justinnelson.harmonymod;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

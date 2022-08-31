@@ -1,6 +1,6 @@
 package com.justinnelson.harmonymod.utility;
 
-import static com.justinnelson.harmonymod.core.HarmonyMod.jda;
+import static com.justinnelson.harmonymod.HarmonyMod.jda;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.justinnelson.harmonymod.interactions.commands;
+package com.justinnelson.harmonymod.modules.interactions.commands;
 
 import com.justinnelson.harmonymod.data.HMCollections;
 

@@ -1,7 +1,7 @@
-package com.justinnelson.harmonymod.interactions.events;
+package com.justinnelson.harmonymod.modules.interactions.events;
 
 import com.justinnelson.harmonymod.utility.Util;
-import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractEvent;
+import com.justinnelson.harmonymod.modules.interactions.events.eventprocessors.AbstractEvent;
 
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.ChannelType;

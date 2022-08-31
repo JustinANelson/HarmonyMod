@@ -1,7 +1,7 @@
-package com.justinnelson.harmonymod.interactions.events;
+package com.justinnelson.harmonymod.modules.interactions.events;
 
-import com.justinnelson.harmonymod.interactions.events.customevents.AutoResponderInteractionEvent;
-import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractEvent;
+import com.justinnelson.harmonymod.modules.interactions.events.customevents.AutoResponderInteractionEvent;
+import com.justinnelson.harmonymod.modules.interactions.events.eventprocessors.AbstractEvent;
 
 public class AutoResponderEvents extends AbstractEvent {
 

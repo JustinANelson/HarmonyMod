@@ -4,7 +4,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.justinnelson.harmonymod.data.AppConfig;
+import com.justinnelson.harmonymod.AppConfig;
 import com.justinnelson.harmonymod.data.HMCollections;
 import com.justinnelson.harmonymod.data.db.dto.GuildDataDTO;
 import com.justinnelson.harmonymod.data.db.dto.ModLogDTO;
@@ -69,7 +69,7 @@ public class DB {
                 .build();
         return MongoClients.create(settings);
     }
-    public void checkOnlineGuildsExist(JDA jda) {
+    public void checkOnlineGuildsExists(JDA jda) {
 
         //Get list of all online guild IDs from jda cache.
         List<String> onlineGuildIDs = jda.getGuilds().stream().map(ISnowflake::getId).collect(Collectors.toList());
@@ -87,6 +87,9 @@ public class DB {
         onlineGuildIDs.removeAll(dbGuildIDs);
 
         trace("Found " + onlineGuildIDs.size() + " connected guilds that are not in the DB.");
+
+        //Create new guildData entry for guilds not in the DB but are connected.
+        //This should never occur unless the DB was offline when the bot was added.
         int size = onlineGuildIDs.size();
         for (int x = 0; x < size; x++) {
             Guild guild = jda.getGuildById(onlineGuildIDs.get(x));
@@ -121,6 +124,11 @@ public class DB {
         */
 
     }
+    public boolean checkUserExists(Member member) {
+        MongoCollection<Document> collection = dbDatabase.getCollection("users");
+        long count = collection.countDocuments(new BsonDocument("id", new BsonString(member.getId())));
+        return count > 0;
+    }
     public void addGuildData(GuildDataEntity guildDataEntity){
         GuildDataDTO guildDataDTO = new GuildDataDTO();
         guildDataDTO.id = guildDataEntity.getId();
@@ -136,23 +144,6 @@ public class DB {
             error(ex.getMessage());
         }
         debug("Entry created for " + guildDataDTO.name + ".");
-    }
-    public void addUser(UserEntity userEntity) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.id = userEntity.getId();
-        userDTO.timezone = userEntity.getTimezone();
-        userDTO.nicknames = userEntity.getNicknames();
-        userDTO.usernames = userEntity.getUsernames();
-        userDTO.mutedMember = userEntity.getMutedMemberEntities();
-
-        String json = gson.toJson(userDTO);
-        Document doc = Document.parse(json);
-        try {
-            dbDatabase.getCollection("users").insertOne(doc);
-        }
-        catch (MongoServerException ex) {
-            error(ex.getMessage());
-        }
     }
     public void addModLogEntry(ModLogEntity modLogEntity) {
 
@@ -175,6 +166,37 @@ public class DB {
         }
         debug("Mod Log Entry created: " + modLogEntity.toString()  + ".");
 
+    }
+    public void addMutedMember(MutedMember member, String userID) {
+        Document doc = dbDatabase.getCollection("users").find(eq("id", userID)).first();
+
+        UserDTO userDTO = gson.fromJson(doc.toJson(), UserDTO.class);
+        userDTO.mutedMember.add(member);
+
+        Document doc2 = Document.parse(gson.toJson(userDTO));
+        try {
+            dbDatabase.getCollection("users").replaceOne(Filters.eq("id", userID), doc2);
+        }
+        catch (MongoServerException ex) {
+            error(ex.getMessage());
+        }
+    }
+    public void addUser(UserEntity userEntity) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.id = userEntity.getId();
+        userDTO.timezone = userEntity.getTimezone();
+        userDTO.nicknames = userEntity.getNicknames();
+        userDTO.usernames = userEntity.getUsernames();
+        userDTO.mutedMember = userEntity.getMutedMemberEntities();
+
+        String json = gson.toJson(userDTO);
+        Document doc = Document.parse(json);
+        try {
+            dbDatabase.getCollection("users").insertOne(doc);
+        }
+        catch (MongoServerException ex) {
+            error(ex.getMessage());
+        }
     }
     public void removeMutedMember(Member member) {
         String guildID = member.getGuild().getId();

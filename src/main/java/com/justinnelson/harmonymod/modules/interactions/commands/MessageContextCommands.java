@@ -1,7 +1,6 @@
-package com.justinnelson.harmonymod.interactions.commands;
+package com.justinnelson.harmonymod.modules.interactions.commands;
 
-import com.justinnelson.harmonymod.data.HMCollections;
-import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractCommand;
+import com.justinnelson.harmonymod.modules.interactions.commands.commandprocessors.AbstractCommand;
 
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 

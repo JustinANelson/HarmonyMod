@@ -1,7 +1,7 @@
 package com.justinnelson.harmonymod.utility;
 
-import com.justinnelson.harmonymod.core.HarmonyMod;
-import com.justinnelson.harmonymod.data.AppConfig;
+import com.justinnelson.harmonymod.AppConfig;
+import com.justinnelson.harmonymod.HarmonyMod;
 import com.justinnelson.harmonymod.data.HMCollections;
 
 import net.dv8tion.jda.api.EmbedBuilder;

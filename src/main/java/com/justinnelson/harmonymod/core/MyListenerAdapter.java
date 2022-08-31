@@ -1,10 +1,15 @@
 package com.justinnelson.harmonymod.core;
 
-import static com.justinnelson.harmonymod.core.HarmonyMod.jda;
+import static com.justinnelson.harmonymod.HarmonyMod.jda;
 
-import com.justinnelson.harmonymod.interactions.commands.customcommands.MessageReceivedInteractionEvent;
+import com.justinnelson.harmonymod.HarmonyMod;
+import com.justinnelson.harmonymod.modules.interactions.commands.customcommands.MessageReceivedInteractionEvent;
 
+import net.dv8tion.jda.api.audit.ActionType;
+import net.dv8tion.jda.api.audit.AuditLogEntry;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.DisconnectEvent;
 import net.dv8tion.jda.api.events.ExceptionEvent;
 import net.dv8tion.jda.api.events.GatewayPingEvent;
@@ -157,6 +162,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -614,6 +621,7 @@ public class MyListenerAdapter extends ListenerAdapter {
     @Override
     public void onGuildMemberUpdate(@Nonnull GuildMemberUpdateEvent event) {
         super.onGuildMemberUpdate(event);
+        System.out.println(event);
     }
     @Override
     public void onGuildMemberUpdateNickname(@Nonnull GuildMemberUpdateNicknameEvent event) {
@@ -638,46 +646,77 @@ public class MyListenerAdapter extends ListenerAdapter {
     @Override
     public void onGuildVoiceUpdate(@Nonnull GuildVoiceUpdateEvent event) {
         super.onGuildVoiceUpdate(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Event Update } ");
     }
     @Override
     public void onGuildVoiceJoin(@Nonnull GuildVoiceJoinEvent event) {
         super.onGuildVoiceJoin(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Join } ");
     }
     @Override
     public void onGuildVoiceMove(@Nonnull GuildVoiceMoveEvent event) {
         super.onGuildVoiceMove(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Move } ");
     }
     @Override
     public void onGuildVoiceLeave(@Nonnull GuildVoiceLeaveEvent event) {
         super.onGuildVoiceLeave(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Leave } ");
     }
     @Override
     public void onGuildVoiceMute(@Nonnull GuildVoiceMuteEvent event) {
         super.onGuildVoiceMute(event);
+        //Fires for Mod mute and self mute - do not use for mod logs
+        //trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Mute } ");
     }
     @Override
     public void onGuildVoiceDeafen(@Nonnull GuildVoiceDeafenEvent event) {
         super.onGuildVoiceDeafen(event);
+        //Fires for Mod deafen and self deafen - do not use for mod logs
+        //trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Deafen } ");
     }
     @Override
     public void onGuildVoiceGuildMute(@Nonnull GuildVoiceGuildMuteEvent event) {
         super.onGuildVoiceGuildMute(event);
+
+        Guild guild = event.getGuild();
+
+
+        List<TextChannel> modLog = guild.getTextChannelsByName("mod-log", true);
+        guild.retrieveAuditLogs()
+                .type(ActionType.MEMBER_UPDATE) // filter by type
+                .limit(1)
+                .queue(list -> {
+                    if (list.isEmpty()) return;
+                    AuditLogEntry entry = list.get(0);
+                    String message = String.format("%#s (un)muted %#s",
+                            entry.getUser(), event.getMember());
+                    modLog.forEach(channel ->
+                            channel.sendMessage(message).queue()
+                    );
+                });
+
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Guild Mute } ");
     }
     @Override
     public void onGuildVoiceGuildDeafen(@Nonnull GuildVoiceGuildDeafenEvent event) {
         super.onGuildVoiceGuildDeafen(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Guild Deafen } ");
     }
     @Override
     public void onGuildVoiceSelfMute(@Nonnull GuildVoiceSelfMuteEvent event) {
         super.onGuildVoiceSelfMute(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Self Mute } ");
     }
     @Override
     public void onGuildVoiceSelfDeafen(@Nonnull GuildVoiceSelfDeafenEvent event) {
         super.onGuildVoiceSelfDeafen(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Self Deafen } ");
     }
     @Override
     public void onGuildVoiceSuppress(@Nonnull GuildVoiceSuppressEvent event) {
         super.onGuildVoiceSuppress(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Supress } ");
     }
     @Override
     public void onGuildVoiceStream(@Nonnull GuildVoiceStreamEvent event) {
@@ -690,6 +729,7 @@ public class MyListenerAdapter extends ListenerAdapter {
     @Override
     public void onGuildVoiceRequestToSpeak(@Nonnull GuildVoiceRequestToSpeakEvent event) {
         super.onGuildVoiceRequestToSpeak(event);
+        trace(event.getMember().getAsMention() + " / " + event.getGuild().getName() + " / " + " { Guild Voice Request To Speak } ");
     }
     @Override
     public void onRoleCreate(@Nonnull RoleCreateEvent event) {

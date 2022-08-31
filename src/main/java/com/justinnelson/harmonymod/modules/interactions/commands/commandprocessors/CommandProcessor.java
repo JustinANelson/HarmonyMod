@@ -1,20 +1,19 @@
-package com.justinnelson.harmonymod.interactions.commands.commandprocessors;
+package com.justinnelson.harmonymod.modules.interactions.commands.commandprocessors;
 
+import com.justinnelson.harmonymod.HarmonyMod;
 import com.justinnelson.harmonymod.data.HMCollections;
-import com.justinnelson.harmonymod.interactions.commands.Commands;
-import com.justinnelson.harmonymod.core.HarmonyMod;
 import com.justinnelson.harmonymod.data.Metrics;
-import com.justinnelson.harmonymod.interactions.commands.MessageContextCommands;
-import com.justinnelson.harmonymod.interactions.commands.MessageReceivedCommands;
-import com.justinnelson.harmonymod.interactions.commands.SlashCommands;
-import com.justinnelson.harmonymod.interactions.commands.UserContextCommands;
-import com.justinnelson.harmonymod.interactions.commands.customcommands.MessageReceivedInteractionEvent;
+import com.justinnelson.harmonymod.modules.interactions.commands.Commands;
+import com.justinnelson.harmonymod.modules.interactions.commands.MessageContextCommands;
+import com.justinnelson.harmonymod.modules.interactions.commands.MessageReceivedCommands;
+import com.justinnelson.harmonymod.modules.interactions.commands.SlashCommands;
+import com.justinnelson.harmonymod.modules.interactions.commands.UserContextCommands;
+import com.justinnelson.harmonymod.modules.interactions.commands.customcommands.MessageReceivedInteractionEvent;
 import com.justinnelson.harmonymod.utility.Util;
 
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

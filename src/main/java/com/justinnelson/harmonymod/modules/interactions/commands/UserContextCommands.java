@@ -1,9 +1,9 @@
-package com.justinnelson.harmonymod.interactions.commands;
+package com.justinnelson.harmonymod.modules.interactions.commands;
 
-import com.justinnelson.harmonymod.core.HarmonyMod;
+import com.justinnelson.harmonymod.HarmonyMod;
 import com.justinnelson.harmonymod.data.entities.ModLogEntity;
 import com.justinnelson.harmonymod.data.entities.helpers.TypeOfModeration;
-import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractCommand;
+import com.justinnelson.harmonymod.modules.interactions.commands.commandprocessors.AbstractCommand;
 import com.justinnelson.harmonymod.utility.Util;
 
 import net.dv8tion.jda.api.entities.Member;

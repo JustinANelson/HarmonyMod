@@ -1,4 +1,4 @@
-package com.justinnelson.harmonymod.interactions.commands.customcommands;
+package com.justinnelson.harmonymod.modules.interactions.commands.customcommands;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;

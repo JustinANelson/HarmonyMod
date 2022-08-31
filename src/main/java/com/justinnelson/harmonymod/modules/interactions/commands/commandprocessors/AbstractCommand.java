@@ -1,9 +1,9 @@
-package com.justinnelson.harmonymod.interactions.events.eventprocessors;
+package com.justinnelson.harmonymod.modules.interactions.commands.commandprocessors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AbstractEvent {
+public abstract class AbstractCommand {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 

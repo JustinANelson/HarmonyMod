@@ -1,11 +1,11 @@
-package com.justinnelson.harmonymod.interactions.events.eventprocessors;
+package com.justinnelson.harmonymod.modules.interactions.events.eventprocessors;
 
 import com.justinnelson.harmonymod.data.Metrics;
-import com.justinnelson.harmonymod.interactions.events.AutoResponderEvents;
-import com.justinnelson.harmonymod.interactions.events.ButtonEvents;
-import com.justinnelson.harmonymod.interactions.events.ModalEvents;
-import com.justinnelson.harmonymod.interactions.events.ModerationEvents;
-import com.justinnelson.harmonymod.interactions.events.SelectMenuEvents;
+import com.justinnelson.harmonymod.modules.interactions.events.AutoResponderEvents;
+import com.justinnelson.harmonymod.modules.interactions.events.ButtonEvents;
+import com.justinnelson.harmonymod.modules.interactions.events.ModalEvents;
+import com.justinnelson.harmonymod.modules.interactions.events.ModerationEvents;
+import com.justinnelson.harmonymod.modules.interactions.events.SelectMenuEvents;
 
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;

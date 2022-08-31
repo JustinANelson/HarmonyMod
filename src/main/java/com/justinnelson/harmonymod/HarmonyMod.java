@@ -1,10 +1,10 @@
-package com.justinnelson.harmonymod.core;
+package com.justinnelson.harmonymod;
 
-import com.justinnelson.harmonymod.data.AppConfig;
+import com.justinnelson.harmonymod.core.MyListenerAdapter;
 import com.justinnelson.harmonymod.data.BotConfig;
 import com.justinnelson.harmonymod.data.db.DB;
-import com.justinnelson.harmonymod.interactions.commands.commandprocessors.CommandProcessor;
-import com.justinnelson.harmonymod.interactions.events.eventprocessors.EventProcessor;
+import com.justinnelson.harmonymod.modules.interactions.commands.commandprocessors.CommandProcessor;
+import com.justinnelson.harmonymod.modules.interactions.events.eventprocessors.EventProcessor;
 import com.justinnelson.harmonymod.utility.PingUpdates;
 import com.justinnelson.harmonymod.utility.Util;
 
@@ -52,7 +52,7 @@ public class HarmonyMod {
         eventProcessor = new EventProcessor();
 
         //Sync database and jda cache connected guilds
-        db.checkOnlineGuildsExist(jda);
+        db.checkOnlineGuildsExists(jda);
 
         //Uncomment only when new commands are added.
         Util.registerTestGuildParameters();

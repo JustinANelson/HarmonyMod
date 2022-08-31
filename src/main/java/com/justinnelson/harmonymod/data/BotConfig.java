@@ -1,5 +1,7 @@
 package com.justinnelson.harmonymod.data;
 
+import com.justinnelson.harmonymod.AppConfig;
+
 import java.util.Random;
 
 public class BotConfig {

@@ -1,7 +1,7 @@
-package com.justinnelson.harmonymod.interactions.commands;
+package com.justinnelson.harmonymod.modules.interactions.commands;
 
-import com.justinnelson.harmonymod.interactions.commands.commandprocessors.AbstractCommand;
-import com.justinnelson.harmonymod.interactions.commands.customcommands.MessageReceivedInteractionEvent;
+import com.justinnelson.harmonymod.modules.interactions.commands.commandprocessors.AbstractCommand;
+import com.justinnelson.harmonymod.modules.interactions.commands.customcommands.MessageReceivedInteractionEvent;
 
 public class MessageReceivedCommands extends AbstractCommand {
 

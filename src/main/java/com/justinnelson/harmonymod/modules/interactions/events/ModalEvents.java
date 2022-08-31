@@ -1,8 +1,8 @@
-package com.justinnelson.harmonymod.interactions.events;
+package com.justinnelson.harmonymod.modules.interactions.events;
 
-import com.justinnelson.harmonymod.core.HarmonyMod;
+import com.justinnelson.harmonymod.HarmonyMod;
+import com.justinnelson.harmonymod.modules.interactions.events.eventprocessors.AbstractEvent;
 import com.justinnelson.harmonymod.utility.Util;
-import com.justinnelson.harmonymod.interactions.events.eventprocessors.AbstractEvent;
 
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;

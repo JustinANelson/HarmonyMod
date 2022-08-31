@@ -1,4 +1,4 @@
-package com.justinnelson.harmonymod.interactions.events.customevents;
+package com.justinnelson.harmonymod.modules.interactions.events.customevents;
 
 public class AutoResponderInteractionEvent {
     String name;
