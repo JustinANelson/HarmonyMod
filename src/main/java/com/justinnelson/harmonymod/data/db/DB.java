@@ -21,6 +21,8 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Updates;
+import com.mongodb.client.result.UpdateResult;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -124,16 +126,12 @@ public class DB {
         */
 
     }
-    public boolean checkUserExists(Member member) {
-        MongoCollection<Document> collection = dbDatabase.getCollection("users");
-        long count = collection.countDocuments(new BsonDocument("id", new BsonString(member.getId())));
-        return count > 0;
-    }
     public void addGuildData(GuildDataEntity guildDataEntity){
         GuildDataDTO guildDataDTO = new GuildDataDTO();
         guildDataDTO.id = guildDataEntity.getId();
         guildDataDTO.name = guildDataEntity.getName();
         guildDataDTO.ownerID = guildDataEntity.getOwnerID();
+        guildDataDTO.caseID = guildDataEntity.getCaseID();
 
         String json = gson.toJson(guildDataDTO);
         Document doc = Document.parse(json);
@@ -145,41 +143,11 @@ public class DB {
         }
         debug("Entry created for " + guildDataDTO.name + ".");
     }
-    public void addModLogEntry(ModLogEntity modLogEntity) {
 
-        ModLogDTO modLogDTO = new ModLogDTO();
-        modLogDTO.logTime = modLogEntity.getLogTime();
-        modLogDTO.moderationID = modLogEntity.getModerationID();
-        modLogDTO.guildID = modLogEntity.getGuildID();
-        modLogDTO.targetID = modLogEntity.getTargetID();
-        modLogDTO.modID = modLogEntity.getModID();;
-        modLogDTO.typeOfModeration = modLogEntity.getTypeOfModeration();
-        modLogDTO.moderationMessage = modLogEntity.getModerationMessage();
-
-        String json = gson.toJson(modLogDTO);
-        Document doc = Document.parse(json);
-        try {
-            dbDatabase.getCollection("modlogs").insertOne(doc);
-        }
-        catch (MongoServerException ex) {
-            error(ex.getMessage());
-        }
-        debug("Mod Log Entry created: " + modLogEntity.toString()  + ".");
-
-    }
-    public void addMutedMember(MutedMember member, String userID) {
-        Document doc = dbDatabase.getCollection("users").find(eq("id", userID)).first();
-
-        UserDTO userDTO = gson.fromJson(doc.toJson(), UserDTO.class);
-        userDTO.mutedMember.add(member);
-
-        Document doc2 = Document.parse(gson.toJson(userDTO));
-        try {
-            dbDatabase.getCollection("users").replaceOne(Filters.eq("id", userID), doc2);
-        }
-        catch (MongoServerException ex) {
-            error(ex.getMessage());
-        }
+    public boolean checkUserExists(Member member) {
+        MongoCollection<Document> collection = dbDatabase.getCollection("users");
+        long count = collection.countDocuments(new BsonDocument("id", new BsonString(member.getId())));
+        return count > 0;
     }
     public void addUser(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
@@ -198,17 +166,66 @@ public class DB {
             error(ex.getMessage());
         }
     }
+
+    public void addModLogEntry(ModLogEntity modLogEntity) {
+
+        ModLogDTO modLogDTO = new ModLogDTO();
+        modLogDTO.logTime = modLogEntity.getLogTime();
+        modLogDTO.moderationID = modLogEntity.getModerationID();
+        modLogDTO.guildID = modLogEntity.getGuildID();
+        modLogDTO.guildIDName = modLogEntity.getGuildIDName();
+        modLogDTO.caseID = modLogEntity.getCaseID();
+        modLogDTO.targetID = modLogEntity.getTargetID();
+        modLogDTO.modID = modLogEntity.getModID();;
+        modLogDTO.typeOfModeration = modLogEntity.getTypeOfModeration();
+        modLogDTO.moderationMessage = modLogEntity.getModerationMessage();
+
+        String json = gson.toJson(modLogDTO);
+        Document doc = Document.parse(json);
+        try {
+            dbDatabase.getCollection("modlogs").insertOne(doc);
+        }
+        catch (MongoServerException ex) {
+            error(ex.getMessage());
+        }
+
+        //Update guild caseID total
+        updateGuildIntValue(modLogEntity.getGuildID(), "caseID", modLogDTO.caseID);
+
+        debug("Mod Log Entry created: " + modLogEntity  + ".");
+
+    }
+
+    public void addMutedMember(MutedMember member, String userID) {
+        Document doc = dbDatabase.getCollection("users").find(eq("id", userID)).first();
+
+        UserDTO userDTO = gson.fromJson(doc.toJson(), UserDTO.class);
+        userDTO.mutedMember.add(member);
+
+        Document doc2 = Document.parse(gson.toJson(userDTO));
+        try {
+            dbDatabase.getCollection("users").replaceOne(Filters.eq("id", userID), doc2);
+        }
+        catch (MongoServerException ex) {
+            error(ex.getMessage());
+        }
+    }
     public void removeMutedMember(Member member) {
         String guildID = member.getGuild().getId();
 
         Document doc = dbDatabase.getCollection("users").find(eq("id", member.getId())).first();
 
+        //Created a new userDTO object from the returned doc
         UserDTO userDTO = gson.fromJson(doc.toJson(), UserDTO.class);
+
+        //Find the muted member object in the user doc
         userDTO.mutedMember.forEach(System.out::println);
         MutedMember mutedMember = userDTO.mutedMember.stream()
                 .filter(guild -> guild.getGuildID().contains(guildID))
                 .findFirst()
                 .orElse(null);
+
+        //Remove the muted member object
         userDTO.mutedMember.remove(mutedMember);
 
         Document doc2 = Document.parse(gson.toJson(userDTO));
@@ -226,11 +243,52 @@ public class DB {
         String json = doc.toJson();
 
         UserDTO userDTO = gson.fromJson(json, UserDTO.class);
-        MutedMember mutedMember = userDTO.mutedMember.stream()
-                        .filter(guild -> guild.getGuildID().contains(guildID)).findFirst().orElse(null);
 
-        return mutedMember;
+        return userDTO.mutedMember.stream()
+                        .filter(guild -> guild.getGuildID().contains(guildID)).findFirst().orElse(null);
     }
+    public void updateMutedMember(MutedMember mutedMember, Member member, boolean addRemove) {
+        if (addRemove) {
+            Document doc = dbDatabase.getCollection("users").find(eq("id", member.getId())).first();
+
+            UserDTO userDTO = gson.fromJson(doc.toJson(), UserDTO.class);
+            userDTO.mutedMember.add(mutedMember);
+
+            Document doc2 = Document.parse(gson.toJson(userDTO));
+            try {
+                dbDatabase.getCollection("users").replaceOne(Filters.eq("id", member.getId()), doc2);
+            }
+            catch (MongoServerException ex) {
+                error(ex.getMessage());
+            }
+        } else {
+            String guildID = member.getGuild().getId();
+
+            Document doc = dbDatabase.getCollection("users").find(eq("id", member.getId())).first();
+
+            //Created a new userDTO object from the returned doc
+            UserDTO userDTO = gson.fromJson(doc.toJson(), UserDTO.class);
+
+            //Find the muted member object in the user doc
+            userDTO.mutedMember.forEach(System.out::println);
+            MutedMember findMutedMember = userDTO.mutedMember.stream()
+                    .filter(guild -> guild.getGuildID().contains(guildID))
+                    .findFirst()
+                    .orElse(null);
+
+            //Remove the muted member object
+            userDTO.mutedMember.remove(findMutedMember);
+
+            Document doc2 = Document.parse(gson.toJson(userDTO));
+            try {
+                dbDatabase.getCollection("users").replaceOne(Filters.eq("id", member.getId()), doc2);
+            }
+            catch (MongoServerException ex) {
+                error(ex.getMessage());
+            }
+        }
+    }
+
     public String getGuildStringValue(String guildID, String field) {
 
         Document doc = dbDatabase.getCollection("guilds").find(eq("id", guildID)).first();
@@ -242,5 +300,29 @@ public class DB {
         Document doc = dbDatabase.getCollection("guilds").find(eq("id", guildID)).first();
 
         return doc.getBoolean(field);
+    }
+    public int getGuildIntValue(String guildID, String field) {
+        Document doc = dbDatabase.getCollection("guilds").find(eq("id", guildID)).first();
+        return doc.getInteger(field);
+    }
+    public void updateGuildIntValue(String guildID, String field, int value){
+        UpdateResult success =
+        dbDatabase.getCollection("guilds").updateOne(eq("id", guildID), Updates.set(field, value));
+        if (success.getModifiedCount() > 0) {
+            trace("Updated total modlog count to = " + value);
+        }
+        else {
+            trace("Failed to update modlog count");
+        }
+    }
+    public void updateGuildStringValue(String guildID, String field, String value){
+        UpdateResult success =
+                dbDatabase.getCollection("guilds").updateOne(eq("id", guildID), Updates.set(field, value));
+        if (success.getModifiedCount() > 0) {
+            trace("Updated " + field + " to " + value);
+        }
+        else {
+            trace("Failed to update " + field + " to " + value);
+        }
     }
 }

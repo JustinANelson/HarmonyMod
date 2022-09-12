@@ -70,7 +70,6 @@ public class ButtonEvents extends AbstractEvent {
         Role muteRole;
         String message = null;
 
-
         //Find muted role
         if (guildMutedRole == null) {
             muteRole = guild.getRoles().stream()
@@ -79,7 +78,6 @@ public class ButtonEvents extends AbstractEvent {
         } else {
             muteRole = guild.getRoleById(guildMutedRole);
         }
-
 
         /*
             Unmute already muted member.
@@ -99,11 +97,10 @@ public class ButtonEvents extends AbstractEvent {
             HarmonyMod.db.removeMutedMember(member);
 
             //Log this interaction
-            ModLogEntity  modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),
+            ModLogEntity modLogEntity = new ModLogEntity(event.getGuild(), member, event.getMember(),
                     TypeOfModeration.UNMUTE, message);
             HarmonyMod.db.addModLogEntry(modLogEntity);
         } else {
-
 
             /*
                 Mute member with optional remove existing roles

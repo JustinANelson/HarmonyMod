@@ -17,6 +17,7 @@ public class GuildDataDTO {
     public String logInviteChannel;
     public String logDeleteChannel;
     public String logEditChannel;
+    public int caseID;
 
     //Managed mute module
     public String muteChannel;

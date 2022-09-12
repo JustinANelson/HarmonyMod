@@ -310,10 +310,13 @@ public class MyListenerAdapter extends ListenerAdapter {
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         super.onMessageReceived(event);
         //TODO set first element of split string array as command name
-        if (event.getMessage().getContentStripped().startsWith(HarmonyMod.botConfig.getCustomPrefix())){
-            MessageReceivedInteractionEvent newEvent = new MessageReceivedInteractionEvent(event);
-            HarmonyMod.commandProcessor.process(newEvent);
+        if (event.getChannelType().isGuild()) {
+            if (event.getMessage().getContentStripped().startsWith(HarmonyMod.botConfig.getCustomPrefix())){
+                MessageReceivedInteractionEvent newEvent = new MessageReceivedInteractionEvent(event);
+                HarmonyMod.commandProcessor.process(newEvent);
+            }
         }
+
     }
     @Override
     public void onMessageUpdate(@Nonnull MessageUpdateEvent event) {
@@ -541,6 +544,7 @@ public class MyListenerAdapter extends ListenerAdapter {
     @Override
     public void onGuildUpdateName(@Nonnull GuildUpdateNameEvent event) {
         super.onGuildUpdateName(event);
+        HarmonyMod.db.updateGuildStringValue(event.getGuild().getId(), "name", event.getNewName());
     }
     @Override
     public void onGuildUpdateNotificationLevel(@Nonnull GuildUpdateNotificationLevelEvent event) {
@@ -549,6 +553,7 @@ public class MyListenerAdapter extends ListenerAdapter {
     @Override
     public void onGuildUpdateOwner(@Nonnull GuildUpdateOwnerEvent event) {
         super.onGuildUpdateOwner(event);
+        HarmonyMod.db.updateGuildStringValue(event.getGuild().getId(), "ownerID", event.getNewOwnerId());
     }
     @Override
     public void onGuildUpdateSplash(@Nonnull GuildUpdateSplashEvent event) {

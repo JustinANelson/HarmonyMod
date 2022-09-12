@@ -6,9 +6,11 @@ public class ModLogDTO {
 
     public String logTime;
     public String guildID;
+    public String guildIDName;
+    public int caseID;
     public String targetID;
     public String modID;
-    public UUID moderationID;
+    public String moderationID;
     public String typeOfModeration;
     public String moderationMessage;
 

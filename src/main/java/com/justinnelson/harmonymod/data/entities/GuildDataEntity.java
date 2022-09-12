@@ -20,6 +20,7 @@ public class GuildDataEntity {
     private String logInviteChannel;
     private String logDeleteChannel;
     private String logEditChannel;
+    private int caseID;
 
     //Managed mute module
     private String muteChannel;
@@ -57,6 +58,7 @@ public class GuildDataEntity {
     public void setLogInviteChannel(String logInviteChannel) {this.logInviteChannel = logInviteChannel;}
     public void setLogDeleteChannel(String logDeleteChannel) {this.logDeleteChannel = logDeleteChannel;}
     public void setLogEditChannel(String logEditChannel) {this.logEditChannel = logEditChannel;}
+    public void setCaseID(int caseID) {this.caseID = caseID;}
     public void setMuteChannel(String muteChannel) {this.muteChannel = muteChannel;}
     public void setMutedRole(String mutedRole) {this.mutedRole = mutedRole;}
     public void setTimeoutChannel(String timeoutChannel) {this.timeoutChannel = timeoutChannel;}
@@ -78,6 +80,7 @@ public class GuildDataEntity {
     public String getLogInviteChannel() {return logInviteChannel;}
     public String getLogDeleteChannel() {return logDeleteChannel;}
     public String getLogEditChannel() {return logEditChannel;}
+    public int getCaseID() {return caseID;}
     public String getMuteChannel() {return muteChannel;}
     public String getMutedRole() {return mutedRole;}
     public String getTimeoutChannel() {return timeoutChannel;}
@@ -102,6 +105,7 @@ public class GuildDataEntity {
                 ", logInviteChannel='" + logInviteChannel + '\'' +
                 ", logDeleteChannel='" + logDeleteChannel + '\'' +
                 ", logEditChannel='" + logEditChannel + '\'' +
+                ", caseID='" + caseID + '\'' +
                 ", muteChannel='" + muteChannel + '\'' +
                 ", mutedRole='" + mutedRole + '\'' +
                 ", timeoutChannel='" + timeoutChannel + '\'' +
