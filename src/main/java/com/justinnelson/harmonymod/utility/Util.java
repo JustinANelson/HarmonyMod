@@ -3,6 +3,7 @@ package com.justinnelson.harmonymod.utility;
 import com.justinnelson.harmonymod.AppConfig;
 import com.justinnelson.harmonymod.HarmonyMod;
 import com.justinnelson.harmonymod.data.HMCollections;
+import com.justinnelson.harmonymod.data.entities.ModLogEntity;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -103,5 +104,20 @@ public class Util {
     }
     public static void logExecution(String actor, String target, String action) {
 
+    }
+
+    public static MessageEmbed modLogsMessageEmbed(String id, String name, ArrayList<ModLogEntity> modLogEntities) {
+      EmbedBuilder embed = new EmbedBuilder();
+      embed.setTitle("Modlogs for " + id + "/" + name);
+      int size = modLogEntities.size();
+        System.out.println("mod logs size " + size);
+        for (int x = 0; x < size; x++) {
+            System.out.println(modLogEntities.get(x).getModID());
+            embed.addField("Case " + modLogEntities.get(x).getCaseID() + " | " + modLogEntities.get(x).getLogTime(),
+                    "\n**Type:** " + modLogEntities.get(x).getTypeOfModeration() +
+                    "\n**Moderator:** " + modLogEntities.get(x).getModID() + "/" + modLogEntities.get(x).getModName() +
+                    "\n**Reason:** " + modLogEntities.get(x).getModerationMessage(), false);
+        }
+      return embed.build();
     }
 }

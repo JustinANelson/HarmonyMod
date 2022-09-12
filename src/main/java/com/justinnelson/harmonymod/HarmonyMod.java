@@ -55,8 +55,8 @@ public class HarmonyMod {
         db.checkOnlineGuildsExists(jda);
 
         //Uncomment only when new commands are added.
-        Util.registerTestGuildParameters();
-        Util.registerGlobalCommands();
+        //Util.registerTestGuildParameters();
+        //Util.registerGlobalCommands();
 
         jda.getPresence().setActivity(Activity.playing("Harmonizing"));
         if (log.isTraceEnabled()) {

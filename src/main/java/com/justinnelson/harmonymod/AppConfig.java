@@ -36,7 +36,7 @@ public class AppConfig {
                 prop.setProperty("SUPPORTSERVER", System.getenv("SUPPORTSERVER"));
             }
         } catch (IOException e) {
-            log.debug("Properties not found. Shutting down.");
+            log.error("Properties not found. Shutting down.");
             System.exit(1);
             e.printStackTrace();
         }

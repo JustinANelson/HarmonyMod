@@ -48,7 +48,7 @@ public class CommandProcessor {
             return;
         }
 
-        if (HMCollections.slashCommands.stream().map(e -> e.getName().contains(event.getName()))
+        if (HMCollections.slashCommands.stream().map(command -> command.getName().contains(event.getName()))
                 .findAny()
                 .isPresent()) {
             Util.logExecution(event.getMember().getEffectiveName(), event.getName());

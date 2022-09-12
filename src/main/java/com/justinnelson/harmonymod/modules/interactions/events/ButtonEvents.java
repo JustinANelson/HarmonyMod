@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 
@@ -29,12 +30,12 @@ public class ButtonEvents extends AbstractEvent {
             case "autoresponses": buttonAutoresponses(event, id); break;
             case "delmessages": buttonDeleteUserMessage(event, id); break;
             case "fixpermissions": buttonFixPermissions(event, id); break;
-            case "lookup": buttonLookup(event, id); break;
             case "mute": buttonMute(event, id); break;
             case "nickname": buttonNickname(event, id); break;
             case "resetpermissions": buttonResetPermissions(event, id); break;
             case "rolebutton": buttonRoleButton(event, id); break;
             case "timeout": buttonTimeout(event, id); break;
+            case "modlogs": buttonModLogs(event, id); break;
         }
     }
     public void buttonAutoresponses(ButtonInteractionEvent event, String id) {
@@ -59,8 +60,16 @@ public class ButtonEvents extends AbstractEvent {
             //TODO Standard failure event reply.
         }
     }
-    public void buttonLookup(ButtonInteractionEvent event, String id) {
+    public void buttonModLogs(ButtonInteractionEvent event, String id) {
         //TODO return moderations for selected member.
+        Guild guild = event.getGuild();
+        Member member = guild.getMemberById(id);
+
+        ArrayList<ModLogEntity> modLogEntities = HarmonyMod.db.getMemberModLogs(event.getGuild().getId(), id);
+
+        String name = member.getEffectiveName() + "#" +member.getUser().getDiscriminator();
+
+        event.replyEmbeds(Util.modLogsMessageEmbed(id, name, modLogEntities)).setEphemeral(true).queue();
     }
     public void buttonMute(ButtonInteractionEvent event, String id) {
         Guild guild = event.getGuild();
@@ -87,7 +96,6 @@ public class ButtonEvents extends AbstractEvent {
 
             //if keepRolesOnMute is toggled off restore roles from DB.
             if (!keepRolesOnMute) {
-                message = "{Roles restored}";
                 MutedMember mutedMember = HarmonyMod.db.getMutedMember(member);
                 for (int x = 0; x < mutedMember.removedRoles.size(); x++) {
                     guild.addRoleToMember(member, guild.getRoleById(mutedMember.removedRoles.get(x))).queue();
@@ -117,7 +125,6 @@ public class ButtonEvents extends AbstractEvent {
                     removedRoles.add(r.getId());
                 }
                 mutedMember.setRemovedRoles(removedRoles);
-                message = "{Roles removed} ";
             }
 
             //Add mute role to member.

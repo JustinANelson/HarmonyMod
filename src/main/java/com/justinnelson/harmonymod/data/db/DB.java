@@ -4,6 +4,7 @@ import static com.mongodb.client.model.Filters.eq;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.justinnelson.harmonymod.AppConfig;
 import com.justinnelson.harmonymod.data.HMCollections;
 import com.justinnelson.harmonymod.data.db.dto.GuildDataDTO;
@@ -16,9 +17,11 @@ import com.justinnelson.harmonymod.data.entities.helpers.MutedMember;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoServerException;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Updates;
@@ -173,10 +176,12 @@ public class DB {
         modLogDTO.logTime = modLogEntity.getLogTime();
         modLogDTO.moderationID = modLogEntity.getModerationID();
         modLogDTO.guildID = modLogEntity.getGuildID();
-        modLogDTO.guildIDName = modLogEntity.getGuildIDName();
+        modLogDTO.guildName = modLogEntity.getGuildName();
         modLogDTO.caseID = modLogEntity.getCaseID();
         modLogDTO.targetID = modLogEntity.getTargetID();
-        modLogDTO.modID = modLogEntity.getModID();;
+        modLogDTO.targetName = modLogEntity.getTargetName();
+        modLogDTO.modID = modLogEntity.getModID();
+        modLogDTO.modName = modLogEntity.getModName();
         modLogDTO.typeOfModeration = modLogEntity.getTypeOfModeration();
         modLogDTO.moderationMessage = modLogEntity.getModerationMessage();
 
@@ -194,6 +199,41 @@ public class DB {
 
         debug("Mod Log Entry created: " + modLogEntity  + ".");
 
+    }
+    public ArrayList<ModLogEntity> getMemberModLogs(String guildID, String memberID) {
+        MongoCollection<Document> collection = dbDatabase.getCollection("modlogs");
+        FindIterable<Document> fi = collection.find();
+
+        ArrayList<ModLogDTO> modLogDTOS = new ArrayList<>();
+        ArrayList<ModLogEntity> modLogEntities = new ArrayList<>();
+
+        try {
+            for (Document doc : fi) {
+                if(doc.get("guildID").equals(guildID)) {
+                    String found = doc.getString("targetID");
+                    if(memberID.equals(found)) {
+                        modLogDTOS.add(gson.fromJson(doc.toJson(), ModLogDTO.class));
+                    }
+                }
+            }
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+        }
+
+        int size = modLogDTOS.size();
+        trace("Logs found:" + size);
+        for (int x = 0; x < size; x++) {
+            ModLogEntity modLogEntity = new ModLogEntity();
+            modLogEntity.setLogTime(modLogDTOS.get(x).logTime);
+            modLogEntity.setGuildName(modLogDTOS.get(x).guildName);
+            modLogEntity.setCaseID(modLogDTOS.get(x).caseID);
+            modLogEntity.setModID(modLogDTOS.get(x).modID);
+            modLogEntity.setModName(modLogDTOS.get(x).modName);
+            modLogEntity.setTypeOfModeration(modLogDTOS.get(x).typeOfModeration);
+            modLogEntity.setModerationMessage(modLogDTOS.get(x).moderationMessage);
+            modLogEntities.add(modLogEntity);
+        }
+        return modLogEntities;
     }
 
     public void addMutedMember(MutedMember member, String userID) {

@@ -123,8 +123,8 @@ public class SlashCommands extends AbstractCommand {
                     ).addActionRow(
                             Button.primary(target+"kick", "kick"), // Button with only a label
                             Button.primary(target+"warn", "warn"), // Button with only a label
-                            Button.primary(target+"moderations", "moderations")// Button with only a label
-                    ).queue();
+                            Button.primary(target+"modlogs", "modlogs")// Button with only a label
+                    ).setEphemeral(true).queue();
         } else {
             String moderator = event.getMember().getId();
 
