@@ -61,7 +61,6 @@ public class ButtonEvents extends AbstractEvent {
         }
     }
     public void buttonModLogs(ButtonInteractionEvent event, String id) {
-        //TODO return moderations for selected member.
         Guild guild = event.getGuild();
         Member member = guild.getMemberById(id);
 

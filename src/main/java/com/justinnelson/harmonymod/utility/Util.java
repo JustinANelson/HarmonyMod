@@ -110,14 +110,17 @@ public class Util {
       EmbedBuilder embed = new EmbedBuilder();
       embed.setTitle("Modlogs for " + id + "/" + name);
       int size = modLogEntities.size();
-        System.out.println("mod logs size " + size);
-        for (int x = 0; x < size; x++) {
-            System.out.println(modLogEntities.get(x).getModID());
-            embed.addField("Case " + modLogEntities.get(x).getCaseID() + " | " + modLogEntities.get(x).getLogTime(),
-                    "\n**Type:** " + modLogEntities.get(x).getTypeOfModeration() +
-                    "\n**Moderator:** " + modLogEntities.get(x).getModID() + "/" + modLogEntities.get(x).getModName() +
-                    "\n**Reason:** " + modLogEntities.get(x).getModerationMessage(), false);
+      for (int x = size - 1; x >= size - 10 ; x--) {
+          System.out.println(modLogEntities.get(x).getModID());
+          embed.addField("Case " + modLogEntities.get(x).getCaseID() + " | " + modLogEntities.get(x).getLogTime(),
+                  "\n**Type:** " + modLogEntities.get(x).getTypeOfModeration() +
+                          "\n**Moderator:** " + modLogEntities.get(x).getModID() + "/" + modLogEntities.get(x).getModName() +
+                          "\n**Reason:** " + modLogEntities.get(x).getModerationMessage(), false);
         }
+      //Shows 10 latest logs if more than 10. Crashes if less.
+
+      //TODO create paginations for more than 10 logs
+
       return embed.build();
     }
 }
